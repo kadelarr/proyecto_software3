@@ -14,18 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Define top level routes for the app, security related views are declated in the security.js
-// Note that this app is a single page app, and each partial is routed to using the URL fragment. For example, to select the 'home' route, the URL is http://localhost:8080/Project/#/home
-angular.module('Login',[]);
-var appModule = angular.module('Proagro', [ 'Login','ngRoute' ]).config(
-		[ '$routeProvider', function($routeProvider) {
-			$routeProvider.when('/login', {
-				templateUrl : 'pages/login/login.html',
-				controller : 'LoginController'
-			// Add a default route
-			}).otherwise({
-				redirectTo : '/login'
-			});
-		} ]).controller('appctrl', function() {
-			
-});
+// Define the REST resource service, allowing us to interact with it as a high level service
+
+angular.module('MessageModule', ['ngResource', 'ngRoute'])
+.factory('MessageService', ['$rootScope', function($rootScope) {
+    $rootScope.messages = [];
+
+    var MessageService = function() {
+        this.setMessages = function(messages) {
+            console.log(messages);
+            $rootScope.messages = messages;
+        };
+
+        this.hasMessages = function() {
+            return $rootScope.messages && $rootScope.messages.length > 0;
+        }
+
+        this.clearMessages = function() {
+            $rootScope.messages = [];
+        }
+    };
+
+    return new MessageService();
+}]);

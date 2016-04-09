@@ -212,6 +212,11 @@
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.1.Final</version>
+                 <configuration>
+                      <hostname>54.183.211.243</hostname>
+                      <username>admin</username>
+					<password>12345678</password>
+                </configuration>
             </plugin>
             
         </plugins>

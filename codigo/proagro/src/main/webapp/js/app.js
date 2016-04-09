@@ -23,8 +23,20 @@ var appModule = angular.module('Proagro', [ 'Login','ngRoute' ]).config(
 				templateUrl : 'pages/login/login.html',
 				controller : 'LoginController'
 			// Add a default route
+			}).when('/about', {
+				templateUrl : 'pages/about/about.html',
+				controller : 'appctrl'
+			// Add a default route
+			}).when('/contact', {
+				templateUrl : 'pages/contact/contact.html',
+				controller : 'appctrl'
+			// Add a default route
+			}).when('/inicio', {
+				templateUrl : 'pages/inicio/inicio.html',
+				controller : 'appctrl'
+			// Add a default route
 			}).otherwise({
-				redirectTo : '/login'
+				redirectTo : '/inicio'
 			});
 		} ]).controller('appctrl', function() {
 			

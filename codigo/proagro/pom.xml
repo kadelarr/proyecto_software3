@@ -221,7 +221,7 @@
 				<artifactId>wildfly-maven-plugin</artifactId>
 				<version>1.0.1.Final</version>
 				<configuration>
-					<hostname>54.183.211.243</hostname>
+					<hostname>uckkf894d257.carmenhoyos9.koding.io</hostname>
 					<username>admin</username>
 					<password>12345678</password>
 				</configuration>

@@ -42,7 +42,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import uniquindio.edu.co.data.MemberRepository;
-import uniquindio.edu.co.model.Member;
+import uniquindio.edu.co.entidades.Member;
 import uniquindio.edu.co.service.MemberRegistration;
 
 /**

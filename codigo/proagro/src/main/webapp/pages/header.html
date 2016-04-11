@@ -1,4 +1,4 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -19,6 +19,18 @@
                 <li><a href="#contact">Cont&aacute;ctenos</a></li>
                 <li><a href="#login">Login</a></li>
             </ul>
-        </div><!--/.nav-collapse -->
+        </div><!--/.nav-collapse -->        
+
     </div>
+
 </div>
+<carousel interval="setInterval" ng-show="showBanner"> 
+            <slide ng-repeat="slide in slides" active="slide.active"> 
+            <img class="carousel-image" ng-src="{{slide.image}}" />
+            <div>
+                <h2>{{slides.title}}</h2>
+                <p>{{slides.texto}}</p>
+            </div>
+            </slide> 
+        </carousel>
+</header>

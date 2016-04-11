@@ -28,9 +28,12 @@ import javax.ws.rs.core.Response;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
+
 import uniquindio.edu.co.data.MemberRepository;
+import uniquindio.edu.co.entidades.Member;
 import uniquindio.edu.co.rest.MemberService;
 import uniquindio.edu.co.service.MemberRegistration;
+
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -38,7 +41,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import uniquindio.edu.co.model.Member;
 import uniquindio.edu.co.util.Resources;
 
 /**

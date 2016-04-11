@@ -16,7 +16,7 @@
  */
 package uniquindio.edu.co.data;
 
-import uniquindio.edu.co.model.Member;
+import uniquindio.edu.co.entidades.Member;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,6 +24,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import java.util.List;
 
 @ApplicationScoped

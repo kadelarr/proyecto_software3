@@ -13,16 +13,16 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/animations.css" rel="stylesheet" type="text/css">
 <link href="css/starter-template.css" rel="stylesheet">
-
-
+<link href="css/style.css" rel="stylesheet" type="text/css">
 
 </head>
 <body ng-controller="appctrl">
-	<div id="main">
 
 		<div ng-include="'pages/header.html'"></div>
 		<br> <br>
 		<div class="row">
+			<div class="alert alert-success"  role="alert" ng-show="showMessage">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="borrarMensaje()"><span aria-hidden="true">&times;</span></button>{{messages}}</div>
 			<div class="col-lg-offset-2">
 				<div ng-view></div>
 			</div>
@@ -30,7 +30,6 @@
 		<br> <br>
 		<div ng-include="'pages/fooder.html'"></div>
 
-	</div>
 	<!-- Load AngularJS -->
 	<script src="js/libs/angular/angular.min.js"></script>
 	<script src="js/libs/angular/angular-resource.min.js"></script>
@@ -41,11 +40,14 @@
 
 	<!-- Load the controllers for our app -->
 	<script src="pages/login/login.js"></script>
+	<script src="pages/usuario/usuario.js"></script>
+
 	
 
 	<!-- Load the services we have defined for the application, particularly the REST services -->
 	<script src="js/services.js"></script>
 	<script src="js/libs/bootstrap/jquery.min.js"></script>
 	<script src="js/libs/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 </body>
 </html>

@@ -106,7 +106,7 @@ var appModule = angular.module('Proagro',
 	return new MessageService();
 } ]).controller('appctrl', function($scope, $location, MessageService,UsuarioService) {
 
-	var img = 'http://uckkf894d257.carmenhoyos9.koding.io:8080/webapp/img/';
+	var img = 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/img/';
 	$scope.setInterval = 5000;
 	$scope.slides = [
 

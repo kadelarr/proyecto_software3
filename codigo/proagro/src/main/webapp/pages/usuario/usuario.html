@@ -1,71 +1,87 @@
-<form name="userForm" class="form-horizontal"  novalidate>
-<div class="form-group" ng-init="inicializar()">
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="identificacion">Identificación:</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="identificacion" placeholder="Ingrese cedula" ng-model="user.identificacion" ng-disabled="editando">
-            </div>
-      </div>
+<div class="container">
+	<div class="col-md-8 col-md-offset-2">
+		<form name="userForm" class="form-horizontal" novalidate>
+			<div class="form-group" ng-init="inicializar()">
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="identificacion">Identificación:</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="identificacion"
+							placeholder="Ingrese cedula" ng-model="user.identificacion"
+							ng-disabled="editando">
+					</div>
+				</div>
 
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="name">Nombre:</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="name" placeholder="Ingrese nombre" ng-model="user.nombre">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="name">Nombre:</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="name"
+							placeholder="Ingrese nombre" ng-model="user.nombre">
+					</div>
+				</div>
 
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="apellido">Apelllido:</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="apellido" placeholder="Ingrese apellido" ng-model="user.apellido">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="apellido">Apelllido:</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="apellido"
+							placeholder="Ingrese apellido" ng-model="user.apellido">
+					</div>
+				</div>
 
-       <div class="form-group">
-            <label class="control-label col-sm-3" for="email">Correo:</label>
-            <div class="col-sm-4">
-                  <input type="email" class="form-control" id="email" placeholder="Ingrese correo" ng-model="user.email">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="email">Correo:</label>
+					<div class="col-sm-4">
+						<input type="email" class="form-control" id="email"
+							placeholder="Ingrese correo" ng-model="user.email">
+					</div>
+				</div>
 
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="rol">Rol:</label>
-            <div class="col-sm-4">
-                  <select class="form-control" id="rol" name="rol" ng-model="user.rol">
-                    <option value="" selected>Seleccione</option>
-                    <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                    <option value="AGRONOMO">AGRONOMO</option>
-                    <option value="SOCIOS">SOCIOS</option>
-                  </select>
-            </div>
-      </div>
-      
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="telefono">Telefono:</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="telefono" placeholder="Ingrese telefono" ng-model="user.telefono">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="rol">Rol:</label>
+					<div class="col-sm-4">
+						<select class="form-control" id="rol" name="rol"
+							ng-model="user.rol">
+							<option value="" selected>Seleccione</option>
+							<option value="ADMINISTRADOR">ADMINISTRADOR</option>
+							<option value="AGRONOMO">AGRONOMO</option>
+							<option value="SOCIOS">SOCIOS</option>
+						</select>
+					</div>
+				</div>
 
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="login">Login:</label>
-            <div class="col-sm-4">
-                  <input type="text" class="form-control" id="login" placeholder="Ingrese login" ng-model="user.login" ng-disabled="editando">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="telefono">Telefono:</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="telefono"
+							placeholder="Ingrese telefono" ng-model="user.telefono">
+					</div>
+				</div>
 
-      <div class="form-group">
-            <label class="control-label col-sm-3" for="password">Constraseña:</label>
-            <div class="col-sm-4">
-                  <input type="password" class="form-control" id="password" placeholder="Ingrese contraseña" ng-model="user.password">
-            </div>
-      </div>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="login">Login:</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="login"
+							placeholder="Ingrese login" ng-model="user.login"
+							ng-disabled="editando">
+					</div>
+				</div>
 
-      <br /><br />
-      <div class="row">
-      <div class="col-sm-offset-4">
-      <input type="button" ng-click="reset()" value="Limpiar" class="btn btn-default"/>
-      <input type="button" ng-click="realizarOperacion()" value="Guardar" class="btn btn-primary" />
-      </div>
-      </div>
-    </form>
+				<div class="form-group">
+					<label class="control-label col-sm-3" for="password">Constraseña:</label>
+					<div class="col-sm-4">
+						<input type="password" class="form-control" id="password"
+							placeholder="Ingrese contraseña" ng-model="user.password">
+					</div>
+				</div>
+
+				<br /> <br />
+				<div class="row">
+					<div class="col-sm-offset-4">
+						<input type="button" ng-click="reset()" value="Limpiar"
+							class="btn btn-default" /> <input type="button"
+							ng-click="realizarOperacion()" value="Guardar"
+							class="btn btn-primary" />
+					</div>
+				</div>
+		</form>
+	</div>
+</div>

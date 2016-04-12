@@ -1,0 +1,27 @@
+<div class="row">
+<!-- 	<div class="col-md-8 col-md-offset-2"> -->
+		<table class="table table-condensed" ng-init="inicializarList()">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>Email</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+				<tr ng-repeat="item in usuarios">
+					<td>{{item.nombre}}</td>
+					<td>{{item.apellido}}</td>
+					<td>{{item.email}}</td>
+					<td><button  type="button" class="btn btn-small btn-primary" ng-click="enviarEditar(item.identificacion)"><span
+							class="glyphicon glyphicon-pencil"></span></button ></td>
+				</tr>
+
+			</tbody>
+
+		</table>
+<!-- 	</div> -->
+</div>

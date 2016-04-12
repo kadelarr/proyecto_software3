@@ -17,6 +17,7 @@
 
 -- You can use this file to load seed data insert insert into  the database using SQL statements
 --insert insert into  Member_pro (id, name, email, phone_number) values (0, 'John Smith', 'john.smith@mailinator.com', '2125551212');
+insert into usuario (identificacion,nombre,apellido,email,password,rol, telefono,sesionIniciada) values ('12345','Camilo','Hoyos','camilo@gmail.com','12345','ADMINISTRADOR','54321', true);
 insert into lote (id_lote, area) values ('1',	2.16);
 insert into lote (id_lote, area) values ('3',	1.4);
 insert into lote (id_lote, area) values ('4',	3.4);
@@ -56,4 +57,8 @@ insert into lote (id_lote, area) values ('35',	1.2);
 insert into lote (id_lote, area) values ('36',	1.0);
 insert into lote (id_lote, area) values ('37',	1.5);
 
-insert into variedad ()
+insert into variedad (id_variedad,nombre) values (57603,'CANAL POINT');
+insert into variedad (id_variedad,nombre) values (8475,'SENICAÑA');
+insert into variedad (id_variedad,nombre) values (933895,'SENICAÑA');
+insert into variedad (id_variedad,nombre) values (934223,'SENICAÑA');
+insert into variedad (id_variedad,nombre) values (011940,'CANAL POINT');

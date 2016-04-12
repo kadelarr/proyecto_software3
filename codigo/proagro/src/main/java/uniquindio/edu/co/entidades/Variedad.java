@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "variedad")
 public class Variedad {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_variedad")
 	private Long id;
 	@NotNull

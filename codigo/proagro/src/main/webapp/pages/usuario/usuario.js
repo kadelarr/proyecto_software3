@@ -86,7 +86,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 
 ).controller(
 		'UsuarioController',
-		function($scope, $location, UsuarioService, MessageService,
+		function($scope, $location,$rootScope, UsuarioService, MessageService,
 				$routeParams) {
 			$scope.user = "";
 			$scope.usuario = {

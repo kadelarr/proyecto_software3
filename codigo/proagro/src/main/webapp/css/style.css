@@ -6,3 +6,11 @@ img{
   margin:auto;
   width:1365px;
 }
+
+.center {
+    text-align:center;
+}
+
+.center form {
+ display:inline-block;
+}

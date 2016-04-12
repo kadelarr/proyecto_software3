@@ -171,6 +171,10 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 							+ response.code);
 				}
 			};
+			
+			$scope.reset=function(){
+				$location.path("/usuarios");
+			};
 
 			$scope.login = function() {
 				console.log($scope.usuario);

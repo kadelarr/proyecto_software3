@@ -11,14 +11,14 @@ public class ResponseDTO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String code;
+	private Integer code;
 	private String mensaje;
 	private Object object;
 	public ResponseDTO() {
-		setCode(Status.OK.toString());
+		setCode(Status.OK.getStatusCode());
 		mensaje="Operación realizada con exito";
 	}
-	public ResponseDTO(String code, String mensaje) {
+	public ResponseDTO(Integer code, String mensaje) {
 		this();
 		this.setCode(code);
 		this.mensaje = mensaje;
@@ -29,10 +29,10 @@ public class ResponseDTO implements Serializable{
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
-	public String getCode() {
+	public Integer getCode() {
 		return code;
 	}
-	public void setCode(String code) {
+	public void setCode(Integer code) {
 		this.code = code;
 	}
 	public Object getObject() {

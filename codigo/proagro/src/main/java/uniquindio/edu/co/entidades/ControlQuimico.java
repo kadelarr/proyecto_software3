@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ControlQuimico {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_control")
 	private Long id;
 	private Date fecha;
 	private String estado;
@@ -35,7 +36,7 @@ public class ControlQuimico {
 	@NotNull
 	private Double IMEX;
 	@ManyToOne
-	@JoinColumn(name="id_siembra",referencedColumnName="id", nullable=false)
+	@JoinColumn(name="id_siembra", nullable=false)
 	private SiembraLote siembra;
 	public Long getId() {
 		return id;

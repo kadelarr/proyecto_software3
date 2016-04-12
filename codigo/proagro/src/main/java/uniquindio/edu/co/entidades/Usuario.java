@@ -1,5 +1,6 @@
 package uniquindio.edu.co.entidades;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,9 +38,9 @@ public class Usuario {
 	private RolEnum rol;
 	private String telefono;
 	@NotNull
-	private String login;
-	@NotNull
 	private String password;
+
+	private Boolean sesionIniciada;
 
 	public static final String CONSULTAR_USUARIO_EMAIL = "consultar_usuario_email";
 
@@ -91,13 +92,6 @@ public class Usuario {
 		this.telefono = telefono;
 	}
 
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
 
 	public String getPassword() {
 		return password;
@@ -105,6 +99,14 @@ public class Usuario {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Boolean getSesionIniciada() {
+		return sesionIniciada;
+	}
+
+	public void setSesionIniciada(Boolean sesionIniciada) {
+		this.sesionIniciada = sesionIniciada;
 	}
 
 }

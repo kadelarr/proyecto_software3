@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "corte_lote")
 public class CorteLote {
 	@Id
+	@Column(name="id_corte")
 	private Long id;
 	@NotNull
 	@Column(name = "fecha_inicio", nullable = false)
@@ -32,9 +33,12 @@ public class CorteLote {
 	private Double totalCana;
 	@Column(name = "total_panela")
 	private Double totalPanela;
+	
 	private Double rendimiento;
+	
 	@OneToOne(mappedBy="corte")
 	private SiembraLote siembra;
+	
 	@OneToMany(mappedBy="corte")
 	private List<Produccion> produccion;
 

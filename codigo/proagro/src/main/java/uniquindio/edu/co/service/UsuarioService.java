@@ -23,10 +23,10 @@ import java.util.Map;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.jws.soap.SOAPBinding.Use;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -48,12 +48,15 @@ import uniquindio.edu.co.util.ResponseDTO;
 @Stateful
 public class UsuarioService {
 
+
 	@Inject
 	private UsuarioEJB usuarioEJB;
 
 	@POST
+	@Path("/listarUsuarios")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Usuario> listAllMembers() {
+	public List<Usuario> listarUsuarios() {
 		return usuarioEJB.listarTodos();
 	}
 
@@ -93,29 +96,30 @@ public class UsuarioService {
 
 		} catch (ConstraintViolationException ce) {
 			// Handle bean validation issues
-			builder.setCode(Response.Status.BAD_REQUEST.toString());
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
 			builder.setMensaje("Error en integridad datos");
 		} catch (ValidationException e) {
 			// Handle the unique constrain violation
 			Map<String, String> responseObj = new HashMap<String, String>();
 			responseObj.put("email", "Ya existe un correo registrado");
-			builder.setCode(Response.Status.CONFLICT.toString());
+			builder.setCode(Response.Status.CONFLICT.getStatusCode());
 			builder.setMensaje("Ya existe un correo registrado");
 		} catch (Exception e) {
 			// Handle generic exceptions
 			Map<String, String> responseObj = new HashMap<String, String>();
 			responseObj.put("error", e.getMessage());
-			builder.setCode(Response.Status.BAD_REQUEST.toString());
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
 			builder.setMensaje("Error realizando la operación");
 		}
 
 		return builder;
 	}
+
 	@POST
 	@Path("/editarUsuario")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO editarUsuario(Usuario usuario){
+	public ResponseDTO editarUsuario(Usuario usuario) {
 		ResponseDTO builder = new ResponseDTO();
 
 		try {
@@ -137,95 +141,109 @@ public class UsuarioService {
 
 		} catch (ConstraintViolationException ce) {
 			// Handle bean validation issues
-			builder.setCode(Response.Status.BAD_REQUEST.toString());
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
 			builder.setMensaje("Error en integridad datos");
 		} catch (ValidationException e) {
 			// Handle the unique constrain violation
-			Map<String, String> responseObj = new HashMap<String, String>();
-			responseObj.put("email", "Ya existe un correo registrado");
-			builder.setCode(Response.Status.CONFLICT.toString());
+
+			builder.setCode(Response.Status.CONFLICT.getStatusCode());
 			builder.setMensaje("Ya existe un correo registrado");
 		} catch (Exception e) {
 			// Handle generic exceptions
-			Map<String, String> responseObj = new HashMap<String, String>();
-			responseObj.put("error", e.getMessage());
-			builder.setCode(Response.Status.BAD_REQUEST.toString());
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
 			builder.setMensaje("Error realizando la operación");
 		}
 		return builder;
 	}
-	
+
 	@POST
 	@Path("/obtenerUsuario")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO obtenerUsuario(String id){
+	public ResponseDTO obtenerUsuario(String id) {
 		ResponseDTO builder = new ResponseDTO();
 
 		try {
 			// Validates member using bean validation
 			if (id != null && !id.isEmpty()) {
 				Usuario user = usuarioEJB.buscar(id);
-				builder.setObject((Object)user);
-				
+				builder.setObject((Object) user);
+
 			} else {
 				throw new ValidationException("Se envio el identificador vacio");
 			}
 			// Create an "ok" response
 		} catch (ValidationException e) {
 			// Handle the unique constrain violation
-			builder.setCode(Response.Status.CONFLICT.toString());
+			builder.setCode(Response.Status.CONFLICT.getStatusCode());
 			builder.setMensaje(e.getMessage());
 		} catch (Exception e) {
 			// Handle generic exceptions
-			builder.setCode(Response.Status.BAD_REQUEST.toString());
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
 			builder.setMensaje("Error realizando la operación");
 		}
 		return builder;
 	}
+	@POST
+	@Path("/login")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseDTO login(@FormParam("email") String email,
+			@FormParam("password") String password) {
+		
+		ResponseDTO builder = new ResponseDTO();
 
-	
+		try {
+			// Validates member using bean validation
+			if (email != null && password != null && !email.isEmpty()
+					&& !password.isEmpty()) {
 
-	/**
-	 * Creates a JAX-RS "Bad Request" response including a map of all violation
-	 * fields, and their message. This can then be used by clients to show
-	 * violations.
-	 * 
-	 * @param violations
-	 *            A set of violations that needs to be reported
-	 * @return JAX-RS response containing all violations
-	 */
-	// private Response.ResponseBuilder createViolationResponse(
-	// Set<ConstraintViolation<?>> violations) {
-	// log.fine("Validation completed. violations found: " + violations.size());
-	//
-	// Map<String, String> responseObj = new HashMap<String, String>();
-	//
-	// for (ConstraintViolation<?> violation : violations) {
-	// responseObj.put(violation.getPropertyPath().toString(),
-	// violation.getMessage());
-	// }
-	//
-	// return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-	// }
+				Boolean login = usuarioEJB.login(email, password);
+				builder.setObject((Object) login);
+				if(!login){
+					builder.setMensaje("EL usuario no se encuentra registrado o no coincide la contraseña");
+					builder.setCode(Response.Status.UNAUTHORIZED.getStatusCode());
+				}
 
-	// /**
-	// * Checks if a member with the same email address is already registered.
-	// * This is the only way to easily capture the
-	// * "@UniqueConstraint(columnNames = "email")" constraint from the Member
-	// * class.
-	// *
-	// * @param email
-	// * The email to check
-	// * @return True if the email already exists, and false otherwise
-	// */
-	// public boolean emailAlreadyExists(String email) {
-	// Member member = null;
-	// try {
-	// Listmember = usuarioEJB.buscarPorEmail(email);
-	// } catch (NoResultException e) {
-	// // ignore
-	// }
-	// return member != null;
-	// }
+			} else {
+				throw new ValidationException("Se enviaron datos vacios  "+email+" "+password);
+			}
+			// Create an "ok" response
+		} catch (ValidationException e) {
+			// Handle the unique constrain violation
+			builder.setCode(Response.Status.CONFLICT.getStatusCode());
+			builder.setMensaje(e.getMessage());
+		} catch (Exception e) {
+			// Handle generic exceptions
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+			builder.setMensaje("Error realizando la operación");
+		}
+		return builder;
+	}
+	@POST
+	@Path("/logout")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ResponseDTO logout(@FormParam("email") String email) {
+		ResponseDTO builder = new ResponseDTO();
+
+		try {
+			// Validates member using bean validation
+			if (email != null && !email.isEmpty()) {
+
+				builder.setObject((Object) usuarioEJB.logout(email));
+
+			} else {
+				throw new ValidationException("Se enviaron datos vacios");
+			}
+			// Create an "ok" response
+		} catch (ValidationException e) {
+			// Handle the unique constrain violation
+			builder.setCode(Response.Status.CONFLICT.getStatusCode());
+			builder.setMensaje(e.getMessage());
+		} catch (Exception e) {
+			// Handle generic exceptions
+			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+			builder.setMensaje("Error realizando la operación");
+		}
+		return builder;
+	}
 }

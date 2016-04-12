@@ -2,6 +2,7 @@ package uniquindio.edu.co.entidades;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "fertilizacion")
 public class Fertilizacion {
 	@Id
+	@Column(name="id_fertilizacion")
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	@NotNull
@@ -28,7 +30,7 @@ public class Fertilizacion {
 	@NotNull
 	private Double KCL;
 	@ManyToOne
-	@JoinColumn(name="id_siembra",referencedColumnName="id", nullable=false)
+	@JoinColumn(name="id_siembra", nullable=false)
 	private SiembraLote siembra;
 	
 	public Long getId() {

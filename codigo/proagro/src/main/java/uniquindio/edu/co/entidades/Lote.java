@@ -15,17 +15,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "lote")
 public class Lote {
 	@Id
-	private Long numero;
+	@Column(name="id_lote")
+	private String numero;
 	@NotNull
 	private Double area;
 	@OneToMany(mappedBy="lote")
 	private List<SiembraLote> siembras;
 
-	public Long getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Long numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

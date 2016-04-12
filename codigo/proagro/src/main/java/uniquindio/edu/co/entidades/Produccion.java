@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Produccion {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_produccion")
 	private Long id;
 	@Column(name = "peso_cana")
 	private Double pesoCana;
@@ -23,8 +24,9 @@ public class Produccion {
 	private Double pesoPanela;
 	@Column(name="pct_extraccion")
 	private Double pcExtraccion;
+	
 	@ManyToOne
-	@JoinColumn(name="id_corte",referencedColumnName="id",nullable=false)
+	@JoinColumn(name="id_corte", nullable=false)
 	private CorteLote corte;
 	
 	public Double getPesoCana() {

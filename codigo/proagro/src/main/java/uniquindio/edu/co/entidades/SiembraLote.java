@@ -3,6 +3,7 @@ package uniquindio.edu.co.entidades;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "siembra_lote")
 public class SiembraLote {
 	@Id
+	@Column(name="id_siembra")
 	private Long id;
 	@NotNull
 	private String nombre;
@@ -25,18 +27,21 @@ public class SiembraLote {
 	private Date fecha;
 
 	@ManyToOne
-	@JoinColumn(name = "id_variedad", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "id_variedad",  nullable = false)
 	private Variedad variedad;
 	@ManyToOne
-	@JoinColumn(name = "id_lote", referencedColumnName = "numero", nullable = false)
+	@JoinColumn(name = "id_lote",  nullable = false)
 	private Lote lote;
-	@OneToOne
-	@JoinColumn(name = "id_corte", referencedColumnName = "id", nullable = false)
-	private CorteLote corte;
+
 	@OneToMany(mappedBy = "siembra")
 	private List<Fertilizacion> fertilizaciones;
+	
 	@OneToMany(mappedBy = "siembra")
 	private List<ControlQuimico> contro;
+	
+	@OneToOne
+	@JoinColumn(name = "id_corte", nullable = false)
+	private CorteLote corte;
 
 	public Date getFecha() {
 		return fecha;

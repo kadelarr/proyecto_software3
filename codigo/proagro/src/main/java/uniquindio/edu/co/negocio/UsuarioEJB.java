@@ -42,7 +42,7 @@ public class UsuarioEJB extends EJBGenerico<Usuario> {
 
 	@Override
 	public void crear(Usuario usuario) {
-		if (buscarPorEmail(usuario.getEmail()).isEmpty()) {
+		if (buscarPorEmail(usuario.getEmail())==null) {
 			dao.crear(usuario);
 		} else {
 			throw new ConstraintViolationException("Email duplicado", null);
@@ -60,8 +60,16 @@ public class UsuarioEJB extends EJBGenerico<Usuario> {
 		return dao.listarTodos();
 	}
 
-	public List<Usuario> buscarPorEmail(String email) {
+	public Usuario buscarPorEmail(String email) {
 		return usuarioDAO.buscarPorEmail(email);
+	}
+	
+	public Boolean login(String email, String password){
+		return usuarioDAO.login(email, password);
+	}
+	
+	public Boolean logout(String email){
+		return usuarioDAO.logout(email);
 	}
 
 }

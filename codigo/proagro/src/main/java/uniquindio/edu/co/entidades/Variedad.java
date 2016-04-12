@@ -2,6 +2,7 @@ package uniquindio.edu.co.entidades;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Variedad {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_variedad")
 	private Long id;
 	@NotNull
 	private String nombre;

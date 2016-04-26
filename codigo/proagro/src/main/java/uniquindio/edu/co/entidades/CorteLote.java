@@ -6,6 +6,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -15,12 +19,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @XmlRootElement
 @Table(name = "corte_lote")
+@NamedQueries({
+
+@NamedQuery(name = CorteLote.OBTENER_ULTIMO_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.id= (select MAX(corte.id) FROM CorteLote corte  WHERE corte.siembra.lote=?1)")
+ })
 public class CorteLote {
+
+	public static final String OBTENER_ULTIMO_CORTE = "obtenerIdUltimoCorte";
+	public static final String OBTENER_ANTERIOR_CORTE = "obtenerAnteriorCorte";
 	@Id
-	@Column(name="id_corte")
+	@Column(name = "id_corte")
 	private Long id;
 	@NotNull
-	@Column(name = "fecha_inicio", nullable = false)
+	@Column(name = "fecha_inicio")
 	private Date fechaInicio;
 	@NotNull
 	@Column(name = "fecha_fin")
@@ -33,13 +44,14 @@ public class CorteLote {
 	private Double totalCana;
 	@Column(name = "total_panela")
 	private Double totalPanela;
-	
+
 	private Double rendimiento;
-	
-	@OneToOne(mappedBy="corte")
+
+	@ManyToOne
+	@JoinColumn(name="id_siembra")
 	private SiembraLote siembra;
-	
-	@OneToMany(mappedBy="corte")
+
+	@OneToMany(mappedBy = "corte")
 	private List<Produccion> produccion;
 
 	public Long getId() {

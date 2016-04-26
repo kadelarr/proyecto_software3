@@ -1,62 +1,137 @@
 package uniquindio.edu.co.entidades;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
 @Table(name = "siembra_lote")
+@NamedQueries({ 
+	@NamedQuery(name = SiembraLote.OBTENER_SIEMBRA_SIN_CORTE, query = "select siembra FROM SiembraLote siembra  JOIN siembra.cortes corte WHERE siembra.lote=?1 and siembra.cortes is  NULL or corte.fechaFin is NULL "),
+	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_ACTUALIZACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra JOIN siembra.cortes corte WHERE siembra.lote=?1 and siembra.id=?2 and (?3 between siembra.fecha and corte.fechaFin) OR (?4 between siembra.fecha and corte.fechaFin)"),
+	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_CREACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra JOIN siembra.cortes corte  WHERE siembra.lote=?1 and (?2 between siembra.fecha and corte.fechaFin) ")
+	})
 public class SiembraLote {
+	public static final String OBTENER_SIEMBRA_SIN_CORTE = "obtenerSiembraSinCorte";
+	
+	
+	
+	public static final String 	VALIDAR_FECHA_ACTUALIZACION_SIEMBRA = "validarFechaActualizacionSiembra";
+	
+	
+	public static final String 	VALIDAR_FECHA_CREACION_SIEMBRA = "validarFechaCreacionSiembra";
+
 	@Id
-	@Column(name="id_siembra")
+	@Column(name = "id_siembra")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
 	@NotNull
-	private String nombre;
-	@NotNull
+	@Column(unique=true)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne
-	@JoinColumn(name = "id_variedad",  nullable = false)
+	@JoinColumn(name = "id_variedad", nullable = false)
 	private Variedad variedad;
 	@ManyToOne
-	@JoinColumn(name = "id_lote",  nullable = false)
+	@JoinColumn(name = "id_lote", nullable = false)
 	private Lote lote;
 
+	@OneToMany(mappedBy="siembra")
+	private List<CorteLote> cortes;
+	
 	@OneToMany(mappedBy = "siembra")
 	private List<Fertilizacion> fertilizaciones;
-	
+
 	@OneToMany(mappedBy = "siembra")
 	private List<ControlQuimico> contro;
-	
-	@OneToOne
-	@JoinColumn(name = "id_corte", nullable = false)
-	private CorteLote corte;
 
 	public Date getFecha() {
 		return fecha;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public Variedad getVariedad() {
+		return variedad;
+	}
+
+	public Lote getLote() {
+		return lote;
+	}
+
+	public List<Fertilizacion> getFertilizaciones() {
+		return fertilizaciones;
+	}
+
+	public List<ControlQuimico> getContro() {
+		return contro;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setVariedad(Variedad variedad) {
+		this.variedad = variedad;
+	}
+
+	public void setLote(Lote lote) {
+		this.lote = lote;
+	}
+
+	public void setFertilizaciones(List<Fertilizacion> fertilizaciones) {
+		this.fertilizaciones = fertilizaciones;
+	}
+
+	public void setContro(List<ControlQuimico> contro) {
+		this.contro = contro;
+	}
+
+
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 
-	public String getNombre() {
-		return nombre;
+	/**
+	 * Permite obtener el atributo cortes.
+	 *
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	 * @return the cortes
+	 */
+	public List<CorteLote> getCortes() {
+		return cortes;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	/**
+	 * Método que permite cambiar el valor del atributo cortes por el parámetro cortes.
+	 * 
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	
+	 * @param cortes es el valor a ser establecido en  cortes.
+	 */
+	public void setCortes(List<CorteLote> cortes) {
+		this.cortes = cortes;
 	}
 
 }

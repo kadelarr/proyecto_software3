@@ -6,12 +6,7 @@ import uniquindio.edu.co.entidades.Usuario;
 
 import java.util.List;
 
-/**
- * DAO de la persona
- * 
- * @author Camilo Andres Ferrer Bustos <caferrerb@gmail.com>
- *
- */
+
 public class UsuarioDAO extends DAO<Usuario> {
 
 	/**

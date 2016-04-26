@@ -1,0 +1,32 @@
+<h1>Listado de siembras</h1>
+<div class="container">
+	<div class="row">
+		
+			<button name="nuevo"  class="btn btn-md btn-primary" ng-click="enviarCrear()">Registrar siembra</button>
+			<table class="table table-condensed" ng-init="inicializarList()">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Email</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr ng-repeat="item in siembras">
+						<td>{{item.Date}} ||</td>
+						<td>{{item.lote.numero}}</td>
+						<td>{{item.variedad.nombre}}</td>
+						<td><button type="button" class="btn btn-small btn-primary"
+								ng-click="enviarEditar(item.id)">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button></td>
+					</tr>
+
+				</tbody>
+
+			</table>
+	</div>
+</div>

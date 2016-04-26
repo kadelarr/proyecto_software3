@@ -1,9 +1,9 @@
-angular.module('Usuario').service('UsuarioService', function($http) {
+angular.module('Usuario').service('UsuarioService',['$http', function($http) {
 
 	this.crearusuario = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/crearUsuario',
+			url : urlBase+'rest/usuario/crearUsuario',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -17,7 +17,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 	this.login = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/login',
+			url : urlBase+'rest/usuario/login',
 			data : data,
 			headers : {
 				'Content-Type' : 'application/x-www-form-urlencoded'
@@ -32,7 +32,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 	this.logout = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/logout',
+			url : urlBase+'rest/usuario/logout',
 			data : data,
 			headers : {
 				'Content-Type' : 'application/x-www-form-urlencoded'
@@ -47,7 +47,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 	this.editarUsuario = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/editarUsuario',
+			url : urlBase+'rest/usuario/editarUsuario',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -61,7 +61,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 	this.obtenerUsuario = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/obtenerUsuario',
+			url : urlBase+'rest/usuario/obtenerUsuario',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -75,14 +75,14 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 	this.listarUsuarios = function(callback, callerror) {
 		$http({
 			method : 'POST',
-			url : 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/rest/usuario/listarUsuarios'
+			url : urlBase+'rest/usuario/listarUsuarios'
 		}).success(function(response) {
 			callback(response);
 		}).error(function() {
 			callerror();
 		});
 	};
-}
+}]
 
 ).controller(
 		'UsuarioController',
@@ -92,7 +92,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 			$scope.usuario = {
 				email : '',
 				password : ''
-			}
+			};
 
 			$scope.inicializar = function() {
 				$scope.id = $routeParams.id;
@@ -140,6 +140,7 @@ angular.module('Usuario').service('UsuarioService', function($http) {
 						function(response) {
 							$scope.validarRespuesta(response);
 							$scope.user = "";
+							$sc
 							$location.path("/usuarios");
 						}, function() {
 							$scope.desplegarError();

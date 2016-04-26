@@ -12,12 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-@Table(name = "control_quimico")
+@Table(name = "control_quimico", uniqueConstraints = @UniqueConstraint(columnNames = {
+		"fecha", "id_siembra" }))
 public class ControlQuimico {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

@@ -17,8 +17,10 @@
 // Define top level routes for the app, security related views are declated in the security.js
 // Note that this app is a single page app, and each partial is routed to using the URL fragment. For example, to select the 'home' route, the URL is http://localhost:8080/Project/#/home
 angular.module('Usuario', []);
+angular.module('Siembra', []);
+var urlBase= 'http://localhost:8080/proagro/';
 var appModule = angular.module('Proagro',
-		[ 'Usuario', 'ngRoute', 'ui.bootstrap' ]).config(
+		[ 'Usuario','Siembra', 'ngRoute', 'ui.bootstrap' ]).config(
 		[ '$routeProvider', function($routeProvider) {
 			$routeProvider.when('/login', {
 				templateUrl : 'pages/usuario/login.html',
@@ -47,6 +49,14 @@ var appModule = angular.module('Proagro',
 			}).when('/mapa', {
 				templateUrl : 'pages/mapa/mapa.html',
 				controller : 'appctrl'
+			// Add a default route
+			}).when('/siembra/:id', {
+				templateUrl : 'pages/siembra/siembra.html',
+				controller : 'SiembraController'
+			// Add a default route
+			}).when('/siembras', {
+				templateUrl : 'pages/siembra/siembras.html',
+				controller : 'SiembraController'
 			// Add a default route
 			}).otherwise({
 				redirectTo : '/inicio'
@@ -95,32 +105,32 @@ var appModule = angular.module('Proagro',
 
 		this.hasMessages = function() {
 			return $rootScope.messages && $rootScope.messages.length > 0;
-		}
+		};
 
 		this.clearMessages = function() {
 			$rootScope.messages = [];
 			$rootScope.showMessage = false;
-		}
+		};
 	};
 
 	return new MessageService();
 } ]).controller('appctrl', function($scope, $location, MessageService,UsuarioService) {
 
-	var img = 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/img/';
+	
 	$scope.setInterval = 5000;
 	$scope.slides = [
 
 	{
 		title : 'Imagen 1',
-		image : img + '2.jpg'
+		image : urlBase + 'img/2.jpg'
 
 	}, {
 		title : 'Imagen 2',
-		image : img + '4.jpg'
+		image : urlBase + 'img/4.jpg'
 	} ];
 	$scope.borrarMensaje = function() {
 		MessageService.clearMessages();
-	}
+	};
 	
 	
 	$scope.logout = function (){

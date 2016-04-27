@@ -114,9 +114,9 @@ var appModule = angular.module('Proagro',
 	};
 
 	return new MessageService();
-} ]).controller('appctrl', function($scope, $location, MessageService,UsuarioService) {
+} ]).controller('appctrl', function($scope,$rootScope, $location, MessageService,UsuarioService) {
 
-	
+	$rootScope.showMessage = false;
 	$scope.setInterval = 5000;
 	$scope.slides = [
 

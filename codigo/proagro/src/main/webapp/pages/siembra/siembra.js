@@ -60,7 +60,7 @@ angular.module('Siembra').service('SiembraService', function($http) {
 				$routeParams) {
 			$scope.siembra = "";
 			$scope.lotes = "";
-			$scope.variedadese = "";
+			$scope.variedades = "";
 
 			$scope.init = function() {
 				$scope.id = $routeParams.id;

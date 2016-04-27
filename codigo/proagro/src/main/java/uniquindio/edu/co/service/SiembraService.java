@@ -33,8 +33,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import uniquindio.edu.co.entidades.Lote;
 import uniquindio.edu.co.entidades.SiembraLote;
+import uniquindio.edu.co.entidades.Variedad;
+import uniquindio.edu.co.negocio.LoteEJB;
 import uniquindio.edu.co.negocio.SiembraEJB;
+import uniquindio.edu.co.negocio.VariedadEJB;
 import uniquindio.edu.co.util.ResponseDTO;
 
 /**
@@ -50,6 +54,12 @@ public class SiembraService {
 
 	@Inject
 	private SiembraEJB siembraEJB;
+	
+	@Inject
+	private LoteEJB loteEJB;
+	
+	@Inject
+	private VariedadEJB variedadEJB;
 
 	@POST
 	@Path("/listarSiembra")
@@ -183,4 +193,20 @@ public class SiembraService {
 		return builder;
 	}
 
+	@POST
+	@Path("/listaLotes")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Lote> listaLotes() {
+		return loteEJB.listarTodos();
+	}
+	
+
+	@POST
+	@Path("/listaVariedades")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Variedad> listaVariedades() {
+		return variedadEJB.listarTodos();
+	}
 }

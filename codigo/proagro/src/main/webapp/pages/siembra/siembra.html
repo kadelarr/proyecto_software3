@@ -9,7 +9,6 @@
 						ng-options="item.numero as item.numero for item in lotes"
 						ng-model="siembra.lote">
 						<option value="" selected>Seleccione</option>
-
 					</select>
 				</div>
 			</div>
@@ -18,7 +17,7 @@
 				<label class="control-label col-sm-3" for="variedad">Variedad:</label>
 				<div class="col-sm-4">
 					<select class="form-control" id="variedad" name="variedad"
-						ng-options="item.id as item.nombre for item in lotes"
+						ng-options='item.id as (item.id+" "+item.nombre) for item in variedades'
 						ng-model="siembra.variedad">
 						<option value="" selected>Seleccione</option>
 					</select>

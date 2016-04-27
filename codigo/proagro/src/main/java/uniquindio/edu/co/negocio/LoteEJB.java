@@ -16,60 +16,12 @@
  */
 package uniquindio.edu.co.negocio;
 
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
 
-import uniquindio.edu.co.dao.UsuarioDAO;
-import uniquindio.edu.co.entidades.Usuario;
+import uniquindio.edu.co.entidades.Lote;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
-public class LoteEJB extends EJBGenerico<Usuario> {
-
-	private UsuarioDAO usuarioDAO;
-	@PostConstruct
-	@Override
-	public void inicializar() {
-		// TODO Auto-generated method stub
-		super.inicializar();
-		usuarioDAO = new UsuarioDAO(em);
-	}
-
-	@Override
-	public void crear(Usuario usuario) {
-		if (buscarPorEmail(usuario.getEmail())==null) {
-			dao.crear(usuario);
-		} else {
-			throw new ConstraintViolationException("Email duplicado", null);
-		}
-
-	}
-
-	@Override
-	public Usuario buscar(Object id) {
-		return dao.buscar(id);
-	}
-
-	@Override
-	public List<Usuario> listarTodos() {
-		return dao.listarTodos();
-	}
-
-	public Usuario buscarPorEmail(String email) {
-		return usuarioDAO.buscarPorEmail(email);
-	}
-	
-	public Boolean login(String email, String password){
-		return usuarioDAO.login(email, password);
-	}
-	
-	public Boolean logout(String email){
-		return usuarioDAO.logout(email);
-	}
+public class LoteEJB extends EJBGenerico<Lote> {
 
 }

@@ -52,6 +52,28 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			callerror();
 		});
 	};
+
+	this.listarLotes = function(callback, callerror) {
+		$http({
+			method : 'POST',
+			url : urlBase + 'rest/siembra/listaLotes'
+		}).success(function(response) {
+			callback(response);
+		}).error(function() {
+			callerror();
+		});
+	};
+
+	this.listarVariedades = function(callback, callerror) {
+		$http({
+			method : 'POST',
+			url : urlBase + 'rest/siembra/listaVariedades'
+		}).success(function(response) {
+			callback(response);
+		}).error(function() {
+			callerror();
+		});
+	};
 }
 
 ).controller(
@@ -61,12 +83,23 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			$scope.siembra = "";
 			$scope.lotes = "";
 			$scope.variedades = "";
-
+			
 			$scope.init = function() {
 				$scope.id = $routeParams.id;
 				$scope.editando = false;
 				if ($scope.id == "new") {
 					$scope.user = "";
+					SiembraService.listarLotes(function(response) {
+						$scope.lotes = response;
+					}, function() {
+						$scope.desplegarError();
+					});
+
+					SiembraService.listarVariedades(function(response) {
+						$scope.variedades = response;
+					}, function() {
+						$scope.desplegarError();
+					});
 				} else {
 					$scope.editando = true;
 					SiembraService.obtenerSiembra($scope.id,
@@ -87,9 +120,7 @@ angular.module('Siembra').service('SiembraService', function($http) {
 
 			$scope.inicializarList = function() {
 				SiembraService.listarSiembra(function(response) {
-
 					$scope.siembras = response;
-
 				}, function() {
 					$scope.desplegarError();
 				});
@@ -129,9 +160,9 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			$scope.enviarEditar = function(identificador) {
 				$location.path("/siembra/" + identificador);
 			};
-			
+
 			$scope.enviarCrear = function() {
-				$location.path("/siembra/new" );
+				$location.path("/siembra/new");
 			};
 
 			$scope.validarRespuesta = function(response) {

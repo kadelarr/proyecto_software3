@@ -26,50 +26,12 @@ import javax.validation.ConstraintViolationException;
 
 import uniquindio.edu.co.dao.UsuarioDAO;
 import uniquindio.edu.co.entidades.Usuario;
+import uniquindio.edu.co.entidades.Variedad;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
-public class VariedadEJB extends EJBGenerico<Usuario> {
+public class VariedadEJB extends EJBGenerico<Variedad> {
 
-	private UsuarioDAO usuarioDAO;
-	@PostConstruct
-	@Override
-	public void inicializar() {
-		// TODO Auto-generated method stub
-		super.inicializar();
-		usuarioDAO = new UsuarioDAO(em);
-	}
-
-	@Override
-	public void crear(Usuario usuario) {
-		if (buscarPorEmail(usuario.getEmail())==null) {
-			dao.crear(usuario);
-		} else {
-			throw new ConstraintViolationException("Email duplicado", null);
-		}
-
-	}
-
-	@Override
-	public Usuario buscar(Object id) {
-		return dao.buscar(id);
-	}
-
-	@Override
-	public List<Usuario> listarTodos() {
-		return dao.listarTodos();
-	}
-
-	public Usuario buscarPorEmail(String email) {
-		return usuarioDAO.buscarPorEmail(email);
-	}
 	
-	public Boolean login(String email, String password){
-		return usuarioDAO.login(email, password);
-	}
-	
-	public Boolean logout(String email){
-		return usuarioDAO.logout(email);
-	}
 
 }

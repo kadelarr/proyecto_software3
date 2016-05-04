@@ -76,6 +76,12 @@ public class SiembraEJB extends EJBGenerico<SiembraLote> {
 
 	@Override
 	public List<SiembraLote> listarTodos() {
+		List<SiembraLote> siembras= dao.listarTodos();
+		for (SiembraLote siembraLote : siembras) {
+			siembraLote.setCortes(null);
+			siembraLote.setContro(null);
+			siembraLote.setFertilizaciones(null);
+		}
 		return dao.listarTodos();
 	}
 

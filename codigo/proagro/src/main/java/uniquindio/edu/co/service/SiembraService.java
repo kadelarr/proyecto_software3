@@ -54,10 +54,10 @@ public class SiembraService {
 
 	@Inject
 	private SiembraEJB siembraEJB;
-	
+
 	@Inject
 	private LoteEJB loteEJB;
-	
+
 	@Inject
 	private VariedadEJB variedadEJB;
 
@@ -158,19 +158,23 @@ public class SiembraService {
 	}
 
 	@POST
-	@Path("/obtenerSiembraLote")
+	@Path("/obtenerSiembra")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO obtenerSiembraLote(String id) {
+	public ResponseDTO obtenerSiembra(String id) {
 		ResponseDTO builder = new ResponseDTO();
 
 		try {
 			// Validates member using bean validation
 			if (id != null && !id.isEmpty()) {
-				SiembraLote user = siembraEJB.buscar(id);
-				if (user != null)
-					builder.setObject((Object) user);
-				else
+				SiembraLote siembra = siembraEJB.buscar(Long.valueOf(id));
+				
+				if (siembra != null) {
+					siembra.setContro(null);
+					siembra.setCortes(null);
+					siembra.setFertilizaciones(null);
+					builder.setObject((Object) siembra);
+				} else
 					throw new WebApplicationException();
 
 			} else {
@@ -180,7 +184,7 @@ public class SiembraService {
 		} catch (WebApplicationException ce) {
 			// Handle bean validation issues
 			builder.setCode(Response.Status.NOT_FOUND.getStatusCode());
-			builder.setMensaje("No se encontro una siembra con el id: "+id);
+			builder.setMensaje("No se encontro una siembra con el id: " + id);
 		} catch (ValidationException e) {
 			// Handle the unique constrain violation
 			builder.setCode(Response.Status.CONFLICT.getStatusCode());
@@ -200,7 +204,6 @@ public class SiembraService {
 	public List<Lote> listaLotes() {
 		return loteEJB.listarTodos();
 	}
-	
 
 	@POST
 	@Path("/listaVariedades")

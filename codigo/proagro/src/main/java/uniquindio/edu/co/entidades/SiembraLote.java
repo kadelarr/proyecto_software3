@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,9 +25,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @Table(name = "siembra_lote", uniqueConstraints=@UniqueConstraint(columnNames={"id_lote","fecha"}))
 @NamedQueries({ 
-	@NamedQuery(name = SiembraLote.OBTENER_SIEMBRA_SIN_CORTE, query = "select siembra FROM SiembraLote siembra  JOIN siembra.cortes corte WHERE siembra.lote.numero=?1 AND (siembra.cortes is  EMPTY ) OR (corte.fechaFin is NULL)"),
-	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_ACTUALIZACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra JOIN siembra.cortes corte WHERE siembra.lote=?1 and siembra.id=?2 and (?3 between siembra.fecha and corte.fechaFin) OR (?4 between siembra.fecha and corte.fechaFin)"),
-	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_CREACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra JOIN siembra.cortes corte  WHERE siembra.lote.numero=?1 and (?2 between siembra.fecha and corte.fechaFin) ")
+	@NamedQuery(name = SiembraLote.OBTENER_SIEMBRA_SIN_CORTE, query = "select siembra FROM SiembraLote siembra  LEFT JOIN FETCH siembra.cortes corte WHERE siembra.lote.numero=?1 AND (siembra.cortes is  EMPTY ) OR (corte.fechaFin is NULL)"),
+	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_ACTUALIZACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra LEFT JOIN FETCH siembra.cortes corte WHERE siembra.lote=?1 and siembra.id=?2 and (?3 between siembra.fecha and corte.fechaFin) OR (?4 between siembra.fecha and corte.fechaFin)"),
+	@NamedQuery(name = SiembraLote.VALIDAR_FECHA_CREACION_SIEMBRA, query = "select siembra FROM SiembraLote siembra LEFT JOIN FETCH siembra.cortes corte  WHERE siembra.lote.numero=?1 and (?2 between siembra.fecha and corte.fechaFin) ")
 	})
 public class SiembraLote {
 	public static final String OBTENER_SIEMBRA_SIN_CORTE = "obtenerSiembraSinCorte";
@@ -53,13 +54,13 @@ public class SiembraLote {
 	@JoinColumn(name = "id_lote", nullable = false)
 	private Lote lote;
 
-	@OneToMany(mappedBy="siembra")
+	@OneToMany(mappedBy="siembra",fetch=FetchType.LAZY)
 	private List<CorteLote> cortes;
 	
-	@OneToMany(mappedBy = "siembra")
+	@OneToMany(mappedBy = "siembra",fetch=FetchType.LAZY)
 	private List<Fertilizacion> fertilizaciones;
 
-	@OneToMany(mappedBy = "siembra")
+	@OneToMany(mappedBy = "siembra",fetch=FetchType.LAZY)
 	private List<ControlQuimico> contro;
 
 	public Date getFecha() {

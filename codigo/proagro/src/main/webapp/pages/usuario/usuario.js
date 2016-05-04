@@ -140,7 +140,7 @@ angular.module('Usuario').service('UsuarioService',['$http', function($http) {
 						function(response) {
 							$scope.validarRespuesta(response);
 							$scope.user = "";
-							$sc
+							
 							$location.path("/usuarios");
 						}, function() {
 							$scope.desplegarError();

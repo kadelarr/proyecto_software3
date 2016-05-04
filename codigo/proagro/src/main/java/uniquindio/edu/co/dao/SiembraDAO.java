@@ -1,6 +1,5 @@
 package uniquindio.edu.co.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,7 +21,8 @@ public class SiembraDAO extends DAO<SiembraLote> {
 	}
 
 	public List<SiembraLote> obtenerSiembrasSinCorte(Lote lote) {
-		return ejecutarNamedQuery(SiembraLote.OBTENER_SIEMBRA_SIN_CORTE, lote);
+		return ejecutarNamedQuery(SiembraLote.OBTENER_SIEMBRA_SIN_CORTE,
+				lote.getNumero());
 	}
 
 	public CorteLote obtenerUltimoCorte(Lote lote) {
@@ -35,27 +35,27 @@ public class SiembraDAO extends DAO<SiembraLote> {
 	}
 
 	public boolean validarFechaActualizacionSiembra(SiembraLote siembra) {
-//		CorteLote corte = siembra.getCortes();
-//		List<CorteLote> ultimoCorte = ejecutarNamedQuery(
-//				SiembraLote.VALIDAR_FECHA_ACTUALIZACION_SIEMBRA,
-//				siembra.getLote(),
-//				siembra.getId(),
-//				siembra.getFecha(),
-//				corte != null ? corte.getFechaFin() != null ? corte
-//						.getFechaFin() : "" : "");
-//		if (ultimoCorte.isEmpty()) {
-//			return true;
-//		}
+		// CorteLote corte = siembra.getCortes();
+		// List<CorteLote> ultimoCorte = ejecutarNamedQuery(
+		// SiembraLote.VALIDAR_FECHA_ACTUALIZACION_SIEMBRA,
+		// siembra.getLote(),
+		// siembra.getId(),
+		// siembra.getFecha(),
+		// corte != null ? corte.getFechaFin() != null ? corte
+		// .getFechaFin() : "" : "");
+		// if (ultimoCorte.isEmpty()) {
+		// return true;
+		// }
 		return false;
 	}
 
 	public boolean validarFechaCreacionSiembra(SiembraLote siembra) {
-//		List<CorteLote> ultimoCorte = ejecutarNamedQuery(
-//				SiembraLote.VALIDAR_FECHA_CREACION_SIEMBRA, siembra.getLote(),
-//				siembra.getFecha());
-//		if (ultimoCorte.isEmpty()) {
-//			return true;
-//		}
+		List<CorteLote> ultimoCorte = ejecutarNamedQuery(
+				SiembraLote.VALIDAR_FECHA_CREACION_SIEMBRA, siembra.getLote()
+						.getNumero(), siembra.getFecha());
+		if (ultimoCorte.isEmpty()) {
+			return true;
+		}
 		return false;
 	}
 

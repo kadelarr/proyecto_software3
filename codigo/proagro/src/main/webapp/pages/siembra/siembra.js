@@ -80,7 +80,11 @@ angular.module('Siembra').service('SiembraService', function($http) {
 		'SiembraController',
 		function($scope, $location, $rootScope, SiembraService, MessageService,
 				$routeParams) {
-			$scope.siembra = "";
+			$scope.siembra = {
+					lote:{},
+					variedad:{},
+					fecha: new Date()
+			};
 			$scope.lotes = "";
 			$scope.variedades = "";
 			
@@ -128,17 +132,15 @@ angular.module('Siembra').service('SiembraService', function($http) {
 
 			$scope.realizarOperacion = function() {
 				if ($scope.editando) {
-					$scope.editarUsuario();
+					$scope.editarSiembra();
 				} else {
-					$scope.crearusuario();
+					$scope.crearSiembra();
 				}
 			};
 			$scope.crearSiembra = function() {
-				console.log(JSON.stringify($scope.siembra));
 				SiembraService.crearSiembra(JSON.stringify($scope.siembra),
 						function(response) {
 							$scope.validarRespuesta(response);
-							$scope.user = "";
 							$location.path("/siembras");
 						}, function() {
 							$scope.desplegarError();
@@ -166,10 +168,11 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			};
 
 			$scope.validarRespuesta = function(response) {
-				console.log(JSON.stringify(response));
-				if (response.code === 'OK') {
+				console.log("respuesta"+response);
+				if (response.code === 200) {
 					MessageService.setMessages(response.mensaje);
 				} else {
+					console.log(response);
 					MessageService.setMessages(response.mensaje + " Code: "
 							+ response.code);
 				}
@@ -178,5 +181,74 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			$scope.reset = function() {
 				$location.path("/siembras");
 			};
+			// DATE
+			$scope.today = function() {
+				$scope.siembra.fecha = new Date();
+			};
+			$scope.today();
+
+			$scope.clear = function() {
+				$scope.siembra.fecha = null;
+			};
+
+			$scope.dateOptions = {
+				dateDisabled : disabled,
+				formatYear : 'yy',
+				maxDate : new Date(2020, 5, 22),
+				minDate : new Date(),
+				startingDay : 1
+			};
+
+			// Disable weekend selection
+			function disabled(data) {
+				var date = data.date, mode = data.mode;
+				return mode === 'day'
+						&& (date.getDay() === 0 || date.getDay() === 6);
+			}
+
+			$scope.open = function() {
+				$scope.popup1.opened = true;
+			};
+
+			$scope.setDate = function(year, month, day) {
+				$scope.siembra.fecha = new Date(year, month, day);
+			};
+
+			$scope.format = 'yyyy/MM/dd';
+
+			$scope.popup1 = {
+				opened : false
+			};
+
+			var tomorrow = new Date();
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			var afterTomorrow = new Date();
+			afterTomorrow.setDate(tomorrow.getDate() + 1);
+			$scope.events = [ {
+				date : tomorrow,
+				status : 'full'
+			}, {
+				date : afterTomorrow,
+				status : 'partially'
+			} ];
+
+			function getDayClass(data) {
+				var date = data.date, mode = data.mode;
+				if (mode === 'day') {
+					var dayToCheck = new Date(date)
+							.setHours(0, 0, 0, 0);
+
+					for ( var i = 0; i < $scope.events.length; i++) {
+						var currentDay = new Date($scope.events[i].date)
+								.setHours(0, 0, 0, 0);
+
+						if (dayToCheck === currentDay) {
+							return $scope.events[i].status;
+						}
+					}
+				}
+
+				return '';
+			}
 
 		});

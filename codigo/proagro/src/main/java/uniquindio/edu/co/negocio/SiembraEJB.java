@@ -23,7 +23,6 @@ import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
 
 import uniquindio.edu.co.dao.SiembraDAO;
-import uniquindio.edu.co.entidades.CorteLote;
 import uniquindio.edu.co.entidades.Lote;
 import uniquindio.edu.co.entidades.SiembraLote;
 
@@ -89,7 +88,7 @@ public class SiembraEJB extends EJBGenerico<SiembraLote> {
 	}
 
 	public boolean validarFechaCreacionSiembra(SiembraLote siembraLote) {
-		return siembraDAO.validarFechaActualizacionSiembra(siembraLote);
+		return siembraDAO.validarFechaCreacionSiembra(siembraLote);
 	}
 
 }

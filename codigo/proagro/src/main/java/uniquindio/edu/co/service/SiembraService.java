@@ -75,10 +75,10 @@ public class SiembraService {
 	 * fields, and related errors.
 	 */
 	@POST
-	@Path("/crearSiembraLote")
+	@Path("/crearSiembra")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO crearSiembraLote(SiembraLote siembraLote) {
+	public ResponseDTO crearSiembra(SiembraLote siembraLote) {
 
 		ResponseDTO builder = new ResponseDTO();
 

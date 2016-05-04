@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,8 +20,22 @@ public class Lote {
 	private String numero;
 	@NotNull
 	private Double area;
-	@OneToMany(mappedBy="lote")
+	@OneToMany(mappedBy="lote", fetch=FetchType.LAZY)
 	private List<SiembraLote> siembras;
+	public Lote() {
+	}
+	
+	/**
+	 * Constructor de la clase 
+	 * 
+	 * @param numero
+	 * @param area
+	 */
+	public Lote(String numero, Double area) {
+		super();
+		this.numero = numero;
+		this.area = area;
+	}
 
 	public String getNumero() {
 		return numero;

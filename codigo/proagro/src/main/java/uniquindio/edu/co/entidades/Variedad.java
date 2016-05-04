@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ public class Variedad {
 	private Long id;
 	@NotNull
 	private String nombre;
-	@OneToMany(mappedBy="variedad")
+	@OneToMany(mappedBy="variedad", fetch= FetchType.LAZY)
 	private List<SiembraLote> siembra;
 	public Long getId() {
 		return id;

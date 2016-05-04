@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -48,7 +47,7 @@ public class CorteLote {
 	private Double rendimiento;
 
 	@ManyToOne
-	@JoinColumn(name="id_siembra")
+	@JoinColumn(name="id_siembra",nullable=false)
 	private SiembraLote siembra;
 
 	@OneToMany(mappedBy = "corte")

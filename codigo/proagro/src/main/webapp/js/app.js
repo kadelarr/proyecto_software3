@@ -18,10 +18,12 @@
 // Note that this app is a single page app, and each partial is routed to using the URL fragment. For example, to select the 'home' route, the URL is http://localhost:8080/Project/#/home
 angular.module('Usuario', []);
 angular.module('Siembra', []);
-var urlBase= 'http://localhost:8080/proagro/';
-var appModule = angular.module('Proagro',
-		[ 'Usuario','Siembra', 'ngRoute', 'ui.bootstrap' ]).config(
-		[ '$routeProvider', function($routeProvider) {
+var urlBase = 'http://localhost:8080/proagro/';
+var appModule = angular
+		.module(
+				'Proagro',
+				[ 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'Usuario', 'Siembra' ])
+		.config([ '$routeProvider', function($routeProvider) {
 			$routeProvider.when('/login', {
 				templateUrl : 'pages/usuario/login.html',
 				controller : 'UsuarioController'
@@ -61,92 +63,108 @@ var appModule = angular.module('Proagro',
 			}).otherwise({
 				redirectTo : '/inicio'
 			});
-		} ]).run(
-		function($rootScope, $location) {
-			$rootScope.$on("$routeChangeStart", function(event, next, current) {
-				
-				// no logged user, redirect to /login
-				var destino=next.originalPath!==undefined?next.originalPath:current.$$route.originalPath;
-				if(destino !== undefined){
-					if (localStorage.isLogin !== undefined && localStorage.isLogin.length != 0) {
-						$rootScope.isLogin = true;
-						if (destino === '/login'
-								|| destino === '/about'
-								|| destino === '/contact'
-								|| destino === '/inicio') {
-							$location.path('/mapa');
-						}
-					} else {
-						if (destino === '/inicio') {
+		} ])
+		.run(
+				function($rootScope, $location) {
+					$rootScope
+							.$on(
+									"$routeChangeStart",
+									function(event, next, current) {
+
+										// no logged user, redirect to /login
+										var destino = next.originalPath !== undefined ? next.originalPath
+												: current.$$route.originalPath;
+										if (destino !== undefined) {
+											if (localStorage.isLogin !== undefined
+													&& localStorage.isLogin.length != 0) {
+												$rootScope.isLogin = true;
+												if (destino === '/login'
+														|| destino === '/about'
+														|| destino === '/contact'
+														|| destino === '/inicio') {
+													$location.path('/mapa');
+												}
+											} else {
+												if (destino === '/inicio') {
+													$rootScope.showBanner = true;
+												} else {
+													$rootScope.showBanner = false;
+												}
+												$rootScope.isLogin = false;
+												if (destino !== '/login'
+														&& destino !== '/about'
+														&& destino !== '/contact'
+														&& destino !== '/inicio') {
+													$location.path('/login');
+												}
+
+											}
+										}
+									});
+				})
+		.factory(
+				'MessageService',
+				[
+						'$rootScope',
+						function($rootScope) {
+							$rootScope.messages = [];
+
+							var MessageService = function() {
+								this.setMessages = function(messages) {
+									console.log(messages);
+									$rootScope.messages = messages;
+									$rootScope.showMessage = true;
+								};
+
+								this.hasMessages = function() {
+									return $rootScope.messages
+											&& $rootScope.messages.length > 0;
+								};
+
+								this.clearMessages = function() {
+									$rootScope.messages = [];
+									$rootScope.showMessage = false;
+								};
+							};
+
+							return new MessageService();
+						} ])
+		.controller(
+				'appctrl',
+				function($scope, $rootScope, $location, MessageService,
+						UsuarioService) {
+
+					$rootScope.showMessage = false;
+					$scope.setInterval = 5000;
+					$scope.slides = [
+
+					{
+						title : 'Imagen 1',
+						image : urlBase + 'img/2.jpg'
+
+					}, {
+						title : 'Imagen 2',
+						image : urlBase + 'img/4.jpg'
+					} ];
+					$scope.borrarMensaje = function() {
+						MessageService.clearMessages();
+					};
+
+					$scope.logout = function() {
+						var usuario = "email=" + localStorage.isLogin;
+						UsuarioService.logout(usuario, function(response) {
+							localStorage.isLogin = '';
+							$scope.login = {};
+							$location.path("inicio");
 							$rootScope.showBanner = true;
-						} else {
-							$rootScope.showBanner = false;
-						}
-						$rootScope.isLogin = false;
-						if (destino !== '/login'
-								&& destino !== '/about'
-								&& destino !== '/contact'
-								&& destino !== '/inicio') {
-							$location.path('/login');
-						}
-						
-					}
-				}
-			});
-		}).factory('MessageService', [ '$rootScope', function($rootScope) {
-	$rootScope.messages = [];
+						}, function() {
+							$scope.desplegarError();
+						});
+					};
 
-	var MessageService = function() {
-		this.setMessages = function(messages) {
-			console.log(messages);
-			$rootScope.messages = messages;
-			$rootScope.showMessage = true;
-		};
+					$scope.desplegarError = function() {
+						MessageService
+								.setMessages("Error al presentar la operación.");
+					};
 
-		this.hasMessages = function() {
-			return $rootScope.messages && $rootScope.messages.length > 0;
-		};
-
-		this.clearMessages = function() {
-			$rootScope.messages = [];
-			$rootScope.showMessage = false;
-		};
-	};
-
-	return new MessageService();
-} ]).controller('appctrl', function($scope,$rootScope, $location, MessageService,UsuarioService) {
-
-	$rootScope.showMessage = false;
-	$scope.setInterval = 5000;
-	$scope.slides = [
-
-	{
-		title : 'Imagen 1',
-		image : urlBase + 'img/2.jpg'
-
-	}, {
-		title : 'Imagen 2',
-		image : urlBase + 'img/4.jpg'
-	} ];
-	$scope.borrarMensaje = function() {
-		MessageService.clearMessages();
-	};
-	
-	
-	$scope.logout = function (){
-		var usuario="email="+localStorage.isLogin;
-		UsuarioService.logout(usuario, function(response){
-			localStorage.isLogin='';
-			$scope.login={};
-			$location.path("inicio");
-			$rootScope.showBanner = true;
-		},function (){
-			$scope.desplegarError();
-		});
-	};
-	
-	$scope.desplegarError = function() {
-		MessageService.setMessages("Error al presentar la operación.");
-	};
-
-});
+				});

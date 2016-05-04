@@ -2,11 +2,11 @@
 	<div class="col-md-8 col-md-offset-2">
 		<form class="form-horizontal" role="form" name="myForm">
 			<div class="form-group">
-				<label class="control-label col-sm-3" for="lote">Número
+				<label class="control-label col-sm-3" for="lote">N&uacute;mero
 					Lote:</label>
 				<div class="col-sm-4">
 					<select class="form-control" id="lote" name="lote"
-						ng-options="item.numero as item.numero for item in lotes"
+						ng-options="item as item.numero for item in lotes track by item.numero"
 						ng-model="siembra.lote">
 						<option value="" selected>Seleccione</option>
 					</select>
@@ -17,7 +17,7 @@
 				<label class="control-label col-sm-3" for="variedad">Variedad:</label>
 				<div class="col-sm-4">
 					<select class="form-control" id="variedad" name="variedad"
-						ng-options='item.id as (item.id+" "+item.nombre) for item in variedades'
+						ng-options='item as (item.id+" "+item.nombre) for item in variedades track by item.id'
 						ng-model="siembra.variedad">
 						<option value="" selected>Seleccione</option>
 					</select>
@@ -25,7 +25,25 @@
 				</div>
 			</div>
 
-			
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="fecha">Fecha:</label>
+				<div class="col-sm-4">
+					<p class="input-group">
+						<input type="text" class="form-control" id="fecha"
+							uib-datepicker-popup="{{format}}" ng-model="dt"
+							is-open="popup1.opened" datepicker-options="dateOptions"
+							ng-required="true" close-text="Close"
+							alt-input-formats="altInputFormats" /> <span
+							class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open()">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+						</span>
+					</p>
+
+				</div>
+			</div>
+
 			<br /> <br />
 			<div class="row">
 				<div class="col-sm-offset-4">
@@ -38,3 +56,16 @@
 		</form>
 	</div>
 </div>
+<style>
+.full button span {
+	background-color: limegreen;
+	border-radius: 32px;
+	color: black;
+}
+
+.partially button span {
+	background-color: orange;
+	border-radius: 32px;
+	color: black;
+}
+</style>

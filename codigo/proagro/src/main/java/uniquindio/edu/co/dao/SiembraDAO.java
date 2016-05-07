@@ -48,6 +48,10 @@ public class SiembraDAO extends DAO<SiembraLote> {
 		// }
 		return false;
 	}
+	
+	public List<SiembraLote> listarSiembrasActuales(){
+		return ejecutarNamedQuery(SiembraLote.LISTAR_SIEMBRAS);
+	}
 
 	public boolean validarFechaCreacionSiembra(SiembraLote siembra) {
 		List<CorteLote> ultimoCorte = ejecutarNamedQuery(

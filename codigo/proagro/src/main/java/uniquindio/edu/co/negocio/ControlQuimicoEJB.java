@@ -18,11 +18,11 @@ package uniquindio.edu.co.negocio;
 
 import javax.ejb.Stateless;
 
-import uniquindio.edu.co.entidades.Variedad;
+import uniquindio.edu.co.entidades.ControlQuimico;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
-public class VariedadEJB extends EJBGenerico<Variedad> {
+public class ControlQuimicoEJB extends EJBGenerico<ControlQuimico> {
 
 	
 

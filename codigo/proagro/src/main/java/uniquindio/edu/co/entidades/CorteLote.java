@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,12 +21,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "corte_lote")
 @NamedQueries({
 
-@NamedQuery(name = CorteLote.OBTENER_ULTIMO_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.id= (select MAX(corte.id) FROM CorteLote corte  WHERE corte.siembra.lote=?1)")
+@NamedQuery(name = CorteLote.OBTENER_ULTIMO_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.id= (select MAX(corte.id) FROM CorteLote corte  WHERE corte.siembra.lote=?1)"),
+@NamedQuery(name = CorteLote.LISTADO_DE_CORTES, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 ORDER BY corteLote.fechaInicio DESC"),
+@NamedQuery(name = CorteLote.VALIDAR_CREACION_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND (?2 BETWEEN corteLote.fechaInicio and corteLote.fechaFin OR ?4 between siembra.fecha and corteLote.fechaFin OR corteLote.fechaInicio BETWEEN ?2 AND ?3) ORDER BY corteLote.fechaInicio DESC"),
+@NamedQuery(name = CorteLote.LISTAR_CORTE_SIN_FECHA_FIN, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND corteLote.fechaFin IS NULL")
+
  })
 public class CorteLote {
 
 	public static final String OBTENER_ULTIMO_CORTE = "obtenerIdUltimoCorte";
-	public static final String OBTENER_ANTERIOR_CORTE = "obtenerAnteriorCorte";
+	public static final String LISTADO_DE_CORTES = "listado_de_cortes";
+	public static final String VALIDAR_CREACION_CORTE = "validar_creacion_corte";
+	public static final String LISTAR_CORTE_SIN_FECHA_FIN ="obtener_corte_sin_fecha_fin";
 	@Id
 	@Column(name = "id_corte")
 	private Long id;
@@ -50,7 +57,7 @@ public class CorteLote {
 	@JoinColumn(name="id_siembra",nullable=false)
 	private SiembraLote siembra;
 
-	@OneToMany(mappedBy = "corte")
+	@OneToMany(mappedBy = "corte", fetch=FetchType.EAGER)
 	private List<Produccion> produccion;
 
 	public Long getId() {
@@ -115,5 +122,51 @@ public class CorteLote {
 
 	public void setRendimiento(Double rendimiento) {
 		this.rendimiento = rendimiento;
+	}
+
+	/**
+	 * Permite obtener el atributo siembra.
+	 *
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	 * @return the siembra
+	 */
+	public SiembraLote getSiembra() {
+		return siembra;
+	}
+
+	/**
+	 * Método que permite cambiar el valor del atributo siembra por el parámetro siembra.
+	 * 
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	
+	 * @param siembra es el valor a ser establecido en  siembra.
+	 */
+	public void setSiembra(SiembraLote siembra) {
+		this.siembra = siembra;
+	}
+
+	/**
+	 * Permite obtener el atributo produccion.
+	 *
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	 * @return the produccion
+	 */
+	public List<Produccion> getProduccion() {
+		return produccion;
+	}
+
+	/**
+	 * Método que permite cambiar el valor del atributo produccion por el parámetro produccion.
+	 * 
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com 
+	
+	 * @param produccion es el valor a ser establecido en  produccion.
+	 */
+	public void setProduccion(List<Produccion> produccion) {
+		this.produccion = produccion;
 	}
 }

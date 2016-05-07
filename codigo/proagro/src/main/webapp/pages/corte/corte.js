@@ -1,9 +1,9 @@
-angular.module('Siembra').service('SiembraService', function($http) {
+angular.module('Siembra').service('CorteService', function($http) {
 
-	this.crearSiembra = function(data, callback, callerror) {
+	this.crearCorte = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : urlBase + 'rest/siembra/crearSiembra',
+			url : urlBase + 'rest/corte/crearCorte',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -14,10 +14,10 @@ angular.module('Siembra').service('SiembraService', function($http) {
 		});
 	};
 
-	this.editarSeeiembra = function(data, callback, callerror) {
+	this.editarCorte = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : urlBase + 'rest/siembra/editarSiembra',
+			url : urlBase + 'rest/corte/editarCorte',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -28,10 +28,10 @@ angular.module('Siembra').service('SiembraService', function($http) {
 		});
 	};
 
-	this.obtenerSiembra = function(data, callback, callerror) {
+	this.obtenerCorte = function(data, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : urlBase + 'rest/siembra/obtenerSiembra',
+			url : urlBase + 'rest/corte/obtenerCorte',
 			data : data
 		}).success(function(response) {
 			callback(response);
@@ -42,10 +42,11 @@ angular.module('Siembra').service('SiembraService', function($http) {
 		});
 	};
 
-	this.listarSiembra = function(callback, callerror) {
+	this.listaCortesPorLote = function(numero, callback, callerror) {
 		$http({
 			method : 'POST',
-			url : urlBase + 'rest/siembra/listarSiembra'
+			url : urlBase + 'rest/corte/listaCortesPorLote',
+			data: numero
 		}).success(function(response) {
 			callback(response);
 		}).error(function() {
@@ -63,50 +64,58 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			callerror();
 		});
 	};
-
-	this.listarVariedades = function(callback, callerror) {
+	
+	this.listaSiembrasActuales = function(callback, callerror) {
 		$http({
 			method : 'POST',
-			url : urlBase + 'rest/siembra/listaVariedades'
+			url : urlBase + 'rest/siembra/listaSiembrasActuales'
 		}).success(function(response) {
 			callback(response);
 		}).error(function() {
 			callerror();
 		});
 	};
+	
 }
 
 ).controller(
-		'SiembraController',
-		function($scope, $location, $rootScope, SiembraService, MessageService,
+		'CorteController',
+		function($scope, $location, $rootScope, CorteService, MessageService,
 				$routeParams) {
-			$scope.siembra = {
-					lote:{},
-					variedad:{},
-					fecha: new Date()
+			$scope.lote="";
+			$scope.corte = {
+					id:"",
+					edad:"",
+					fechaInicio:new Date(),
+					fechaFin:new Date(),
+					totalCana:0,
+					totalPanela:0,
+					rendimiento:0,
+					siembra:{}
+				
 			};
 			$scope.lotes = "";
-			$scope.variedades = "";
+			$scope.siembras = "";
 			
 			$scope.init = function() {
 				$scope.id = $routeParams.id;
 				$scope.editando = false;
 				if ($scope.id == "new") {
 					$scope.user = "";
-					SiembraService.listarLotes(function(response) {
-						$scope.lotes = response;
+					CorteService.listaSiembrasActuales(function(response) {
+						$scope.siembras = response;
 					}, function() {
 						$scope.desplegarError();
 					});
 
-					SiembraService.listarVariedades(function(response) {
+					CorteService.listarVariedades(function(response) {
 						$scope.variedades = response;
 					}, function() {
 						$scope.desplegarError();
 					});
 				} else {
 					$scope.editando = true;
-					SiembraService.obtenerSiembra($scope.id,
+					CorteService.obtenerSiembra($scope.id,
 							function(response) {
 								if (response.code == 200) {
 									$scope.siembra = response.object;
@@ -123,48 +132,59 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			};
 
 			$scope.inicializarList = function() {
-				SiembraService.listarSiembra(function(response) {
-					$scope.siembras = response;
+				CorteService.listarLotes(function(response) {
+					$scope.lotes = response;
 				}, function() {
 					$scope.desplegarError();
 				});
+				
+			};
+			
+			$scope.listaCortesPorLote =function (){
+				if($scope.corte.siembra.lote.numero){
+					CorteService.listaCortesPorLote($scope.corte.siembra.lote.numero,function(response) {
+						$scope.cortes = response;
+					}, function() {
+						$scope.desplegarError();
+					});
+				}
 			};
 
 			$scope.realizarOperacion = function() {
 				if ($scope.editando) {
-					$scope.editarSiembra();
+					$scope.editarCorte();
 				} else {
-					$scope.crearSiembra();
+					$scope.crearCorte();
 				}
 			};
-			$scope.crearSiembra = function() {
-				SiembraService.crearSiembra(JSON.stringify($scope.siembra),
+			$scope.crearCorte = function() {
+				CorteService.crearCorte(JSON.stringify($scope.siembra),
 						function(response) {
 							$scope.validarRespuesta(response);
-							$location.path("/siembras");
+							$location.path("/cortes");
 						}, function() {
 							$scope.desplegarError();
 						});
 			};
 
-			$scope.editarSiembra = function() {
+			$scope.editarCorte = function() {
 				console.log(JSON.stringify($scope.siembra));
-				SiembraService.crearSiembra(JSON.stringify($scope.siembra),
+				CorteService.crearCorte(JSON.stringify($scope.siembra),
 						function(response) {
 							$scope.validarRespuesta(response);
 							$scope.user = "";
-							$location.path("/siembras");
+							$location.path("/cortes");
 						}, function() {
 							$scope.desplegarError();
 						});
 			};
 
 			$scope.enviarEditar = function(identificador) {
-				$location.path("/siembra/" + identificador);
+				$location.path("/corte/" + identificador);
 			};
 
 			$scope.enviarCrear = function() {
-				$location.path("/siembra/new");
+				$location.path("/corte/new");
 			};
 
 			$scope.validarRespuesta = function(response) {
@@ -179,16 +199,16 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			};
 
 			$scope.reset = function() {
-				$location.path("/siembras");
+				$location.path("/cortes");
 			};
 			// DATE
 			$scope.today = function() {
-				$scope.siembra.fecha = new Date();
+				$scope.corte.fechaInicio = new Date();
 			};
 			$scope.today();
 
 			$scope.clear = function() {
-				$scope.siembra.fecha = null;
+				$scope.siembra.fechaInicio = null;
 			};
 
 			$scope.dateOptions = {
@@ -211,7 +231,7 @@ angular.module('Siembra').service('SiembraService', function($http) {
 			};
 
 			$scope.setDate = function(year, month, day) {
-				$scope.siembra.fecha = new Date(year, month, day);
+				$scope.siembra.fechaInicio = new Date(year, month, day);
 			};
 
 			$scope.format = 'yyyy/MM/dd';

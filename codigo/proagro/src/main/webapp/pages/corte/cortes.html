@@ -1,0 +1,56 @@
+<h1>Listado de cortes</h1>
+<div class="form-group">
+				<label class="control-label col-sm-2" for="lote">Filtrar Lote:</label>
+				<div class="col-sm-2">
+					<select class="form-control" id="lote" name="lote"
+						ng-options='item as item.numero for item in lotes track by item.numero'
+						ng-model="corte.siembra.lote">
+						<option value="" selected>Seleccione</option>
+					</select>
+
+				</div>
+				<div class="col-sm-2">
+					<button name="buscar"  class="btn btn-md btn-primary" ng-click="listaCortesPorLote()">Filtrar</button>
+				</div>
+			</div>
+<div class="container">
+	<div class="row">
+		
+			<button name="nuevo"  class="btn btn-md btn-primary" ng-click="enviarCrear()">Registrar siembra</button>
+			<table class="table table-condensed" ng-init="inicializarList()">
+				<thead>
+					<tr>
+						<th>Lote</th>
+						<th>Fecha Inicio</th>
+						<th>Fecha Fin</th>
+						<th>Edad</th>
+						<th>N&uacute;mero Corte</th>
+						<th>Total Ca&ntilde;a</th>
+						<th>Total Panela</th>
+						<th>Rendimiento</th>
+						
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr ng-repeat="item in cortes">
+						<td>{{item.siembra.lote.numero}} </td>
+						<td>{{item.fechaInicio | date:'dd-MM-yyyy'}}</td>
+						<td>{{item.fechaFin | date:'dd-MM-yyyy'}}</td>
+						<td>{{item.edad }}</td>
+						<td>{{item.numeroCorte }}</td>
+						<td>{{item.totalCana }}</td>
+						<td>{{item.totalPanela }}</td>
+						<td>{{item.rendimiento }}</td>
+						<td><button type="button" class="btn btn-small btn-primary"
+								ng-click="enviarEditar(item.id)">
+								<span class="glyphicon glyphicon-pencil"></span>
+							</button></td>
+					</tr>
+
+				</tbody>
+
+			</table>
+	</div>
+</div>

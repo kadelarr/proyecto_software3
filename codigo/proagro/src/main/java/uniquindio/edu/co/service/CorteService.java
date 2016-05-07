@@ -1,5 +1,5 @@
 /*
- * JBoss, Home of Professional Open Source
+O * JBoss, Home of Professional Open Source
  * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
@@ -24,6 +24,7 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -33,9 +34,11 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import uniquindio.edu.co.entidades.CorteLote;
 import uniquindio.edu.co.entidades.Lote;
 import uniquindio.edu.co.entidades.SiembraLote;
 import uniquindio.edu.co.entidades.Variedad;
+import uniquindio.edu.co.negocio.CorteLoteEJB;
 import uniquindio.edu.co.negocio.LoteEJB;
 import uniquindio.edu.co.negocio.SiembraEJB;
 import uniquindio.edu.co.negocio.VariedadEJB;
@@ -47,13 +50,13 @@ import uniquindio.edu.co.util.ResponseDTO;
  * This class produces a RESTful service to read/write the contents of the
  * members table.
  */
-@Path("/siembra")
+@Path("/corte")
 @RequestScoped
 @Stateful
-public class SiembraService {
+public class CorteService {
 
 	@Inject
-	private SiembraEJB siembraEJB;
+	private CorteLoteEJB corteEJB;
 
 	@Inject
 	private LoteEJB loteEJB;
@@ -61,13 +64,13 @@ public class SiembraService {
 	@Inject
 	private VariedadEJB variedadEJB;
 
-	@POST
-	@Path("/listarSiembra")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SiembraLote> listarSiembraLotes() {
-		return siembraEJB.listarTodos();
-	}
+//	@POST
+//	@Path("/listarSiembra")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<SiembraLote> listarSiembraLotes() {
+//		return siembraEJB.listarTodos();
+//	}
 
 	/**
 	 * Creates a new member from the values provided. Performs validation, and
@@ -75,18 +78,19 @@ public class SiembraService {
 	 * fields, and related errors.
 	 */
 	@POST
-	@Path("/crearSiembra")
+	@Path("/crearCorte")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO crearSiembra(SiembraLote siembraLote) {
+	
+	public ResponseDTO crearCorte(CorteLote corte) {
 
 		ResponseDTO builder = new ResponseDTO();
 
 		try {
-			if (siembraLote != null && siembraLote.getFecha() != null
-					&& siembraLote.getLote() != null
-					&& siembraLote.getVariedad() != null) {
-				siembraEJB.crear(siembraLote);
+			if (corte != null && corte.getFechaInicio() != null && corte.getFechaFin() != null
+					&& corte.getSiembra() != null
+					&& corte.getSiembra().getLote() != null&& corte.getSiembra().getLote().getNumero() != null) {
+				corteEJB.crearCorte(corte);
 			} else {
 				throw new ValidationException(
 						"Ingrese datos de manera inadecuada");
@@ -111,69 +115,67 @@ public class SiembraService {
 		return builder;
 	}
 
+//	@POST
+//	@Path("/editarSiembraLote")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public ResponseDTO editarSiembraLote(SiembraLote siembraLote) {
+//		ResponseDTO builder = new ResponseDTO();
+//
+//		try {
+//			// Validates member using bean validation
+//			if (siembraLote != null && siembraLote.getFecha() != null
+//					&& siembraLote.getLote() != null
+//					&& siembraLote.getVariedad() != null) {
+//				SiembraLote siembra = siembraEJB.buscar(siembraLote.getId());
+//				if (siembra != null) {
+//					siembra.setCortes(siembraLote.getCortes());
+//					siembra.setFecha(siembraLote.getFecha());
+//					siembra.setVariedad(siembraLote.getVariedad());
+//					siembra.setLote(siembraLote.getLote());
+//
+//					siembraEJB.actualizar(siembra);
+//				} else {
+//					throw new WebApplicationException();
+//				}
+//			} else {
+//				throw new ValidationException(
+//						"Ingrese datos de manera adecuada");
+//			}
+//			// Create an "ok" response
+//
+//		} catch (WebApplicationException ce) {
+//			// Handle bean validation issues
+//			builder.setCode(Response.Status.NOT_FOUND.getStatusCode());
+//			builder.setMensaje("No se encontro una siembra con el id para actualizar.");
+//		} catch (ValidationException e) {
+//			// Handle the unique constrain violation
+//
+//			builder.setCode(Response.Status.CONFLICT.getStatusCode());
+//			builder.setMensaje(e.getMessage());
+//		} catch (Exception e) {
+//			// Handle generic exceptions
+//			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+//			builder.setMensaje("Error realizando la operación");
+//		}
+//		return builder;
+//	}
+
 	@POST
-	@Path("/editarSiembraLote")
+	@Path("/obtenerCorte")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO editarSiembraLote(SiembraLote siembraLote) {
-		ResponseDTO builder = new ResponseDTO();
-
-		try {
-			// Validates member using bean validation
-			if (siembraLote != null && siembraLote.getFecha() != null
-					&& siembraLote.getLote() != null
-					&& siembraLote.getVariedad() != null) {
-				SiembraLote siembra = siembraEJB.buscar(siembraLote.getId());
-				if (siembra != null) {
-					siembra.setCortes(siembraLote.getCortes());
-					siembra.setFecha(siembraLote.getFecha());
-					siembra.setVariedad(siembraLote.getVariedad());
-					siembra.setLote(siembraLote.getLote());
-
-					siembraEJB.actualizar(siembra);
-				} else {
-					throw new WebApplicationException();
-				}
-			} else {
-				throw new ValidationException(
-						"Ingrese datos de manera adecuada");
-			}
-			// Create an "ok" response
-
-		} catch (WebApplicationException ce) {
-			// Handle bean validation issues
-			builder.setCode(Response.Status.NOT_FOUND.getStatusCode());
-			builder.setMensaje("No se encontro una siembra con el id para actualizar.");
-		} catch (ValidationException e) {
-			// Handle the unique constrain violation
-
-			builder.setCode(Response.Status.CONFLICT.getStatusCode());
-			builder.setMensaje(e.getMessage());
-		} catch (Exception e) {
-			// Handle generic exceptions
-			builder.setCode(Response.Status.BAD_REQUEST.getStatusCode());
-			builder.setMensaje("Error realizando la operación");
-		}
-		return builder;
-	}
-
-	@POST
-	@Path("/obtenerSiembra")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDTO obtenerSiembra(String id) {
+	public ResponseDTO obtenerCorte(String id) {
 		ResponseDTO builder = new ResponseDTO();
 
 		try {
 			// Validates member using bean validation
 			if (id != null && !id.isEmpty()) {
-				SiembraLote siembra = siembraEJB.buscar(Long.valueOf(id));
+				CorteLote corte = corteEJB.buscar(Long.valueOf(id));
 				
-				if (siembra != null) {
-					siembra.setContro(null);
-					siembra.setCortes(null);
-					siembra.setFertilizaciones(null);
-					builder.setObject((Object) siembra);
+				if (corte != null) {
+					corte.setProduccion(null);
+					builder.setObject(corte);
 				} else
 					throw new WebApplicationException();
 
@@ -204,21 +206,29 @@ public class SiembraService {
 	public List<Lote> listaLotes() {
 		return loteEJB.listarTodos();
 	}
+	
+	@POST
+	@Path("/listaCortesPorLote")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CorteLote> listaCortesPorLote(String numeroLote) {
+		List<CorteLote> listarCortePorLote = corteEJB.listarCortePorLote(numeroLote);
+		for (CorteLote corteLote : listarCortePorLote) {
+			if(corteLote.getSiembra()!=null){
+				corteLote.getSiembra().setContro(null);
+				corteLote.getSiembra().setCortes(null);
+				corteLote.getSiembra().setFertilizaciones(null);
+//				corteLote.setProduccion(null);
+			}
+		}
+		return listarCortePorLote;
+	}
 
-	
-	@POST
-	@Path("/listaSiembrasActuales")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SiembraLote> listaSiembrasActuales() {
-		return siembraEJB.listarSiembraActuales();
-	}
-	
-	@POST
-	@Path("/listaVariedades")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Variedad> listaVariedades() {
-		return variedadEJB.listarTodos();
-	}
+//	@POST
+//	@Path("/listaVariedades")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<Variedad> listaVariedades() {
+//		return variedadEJB.listarTodos();
+//	}
 }

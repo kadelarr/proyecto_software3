@@ -60,6 +60,14 @@ var appModule = angular
 				templateUrl : 'pages/siembra/siembras.html',
 				controller : 'SiembraController'
 			// Add a default route
+			}).when('/cortes', {
+				templateUrl : 'pages/corte/cortes.html',
+				controller : 'CorteController'
+			// Add a default route
+			}).when('/corte/:id', {
+				templateUrl : 'pages/corte/corte.html',
+				controller : 'CorteController'
+			// Add a default route
 			}).otherwise({
 				redirectTo : '/inicio'
 			});

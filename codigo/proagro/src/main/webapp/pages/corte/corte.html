@@ -1,0 +1,104 @@
+<div class="container" ng-init="init()">
+	<div class="col-md-8 col-md-offset-2">
+		<form class="form-horizontal" role="form" name="myForm">
+
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="siembra">Siembra:</label>
+				<div class="col-sm-4">
+					<select class="form-control" id="siembra" name="siembra"
+						ng-options='item as item.lote.numero for item in siembras track by item.id'
+						ng-model="corte.simebra">
+						<option value="" selected>Seleccione</option>
+					</select>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="fecha">Fecha
+					Inicio:</label>
+				<div class="col-sm-4">
+					<p class="input-group">
+						<input type="text" class="form-control" id="fecha"
+							uib-datepicker-popup="{{format}}" ng-model="corte.fechaInicio"
+							is-open="popup1.opened" datepicker-options="dateOptions"
+							ng-required="true" close-text="Close"
+							alt-input-formats="altInputFormats" /> <span
+							class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open()">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+						</span>
+					</p>
+
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="fecha">Fecha Fin:</label>
+				<div class="col-sm-4">
+					<p class="input-group">
+						<input type="text" class="form-control" id="fecha"
+							uib-datepicker-popup="{{format}}" ng-model="corte.fechaFin"
+							is-open="popup1.opened" datepicker-options="dateOptions"
+							ng-required="true" close-text="Close"
+							alt-input-formats="altInputFormats" /> <span
+							class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open()">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</button>
+						</span>
+					</p>
+
+				</div>
+			</div>
+
+			<div class="form-group ">
+				<label class="control-label col-md-2" for="cana">Total Ca&ntilde;a:</label>
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="cana" 
+						placeholder="Enter tatal caña" ng-model="corte.totalCana">
+				</div>
+			</div>
+
+			<div class="form-group ">
+				<label class="control-label col-md-2" for="panela">Total Panela:</label>
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="panela" 
+						placeholder="Enter total panela" ng-model="corte.totalPanela">
+				</div>
+			</div>
+
+			<div class="form-group ">
+				<label class="control-label col-md-2" for="rendimiento">Rendimiento:</label>
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="rendimiento" 
+						placeholder="Enter email" ng-model="usuario.email">
+				</div>
+			</div>
+
+			<br /> <br />
+			<div class="row">
+				<div class="col-sm-offset-4">
+					<input type="button" ng-click="reset()" value="Volver"
+						class="btn btn-default" /> <input type="button"
+						ng-click="realizarOperacion()" value="Guardar"
+						class="btn btn-primary" />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<style>
+.full button span {
+	background-color: limegreen;
+	border-radius: 32px;
+	color: black;
+}
+
+.partially button span {
+	background-color: orange;
+	border-radius: 32px;
+	color: black;
+}
+</style>

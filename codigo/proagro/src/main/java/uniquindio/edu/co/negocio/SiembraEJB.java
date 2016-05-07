@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.validation.ConstraintViolationException;
 
 import uniquindio.edu.co.dao.SiembraDAO;
@@ -46,12 +48,12 @@ public class SiembraEJB extends EJBGenerico<SiembraLote> {
 			if (validarFechaCreacionSiembra(siembra)) {
 				dao.crear(siembra);
 			} else {
-				throw new ConstraintViolationException(
+				throw new IllegalArgumentException(
 						"Ya existe una siembra con la fecha de siembra dada. Valide que el corte de haya realizado antes de la fecha ingresada.",
 						null);
 			}
 		} else {
-			throw new ConstraintViolationException(
+			throw new IllegalArgumentException(
 					"A la siembra anterior del lote : "
 							+ siembra.getLote().getNumero()
 							+ " aún no se le ha registrado un corte.", null);
@@ -68,13 +70,14 @@ public class SiembraEJB extends EJBGenerico<SiembraLote> {
 		}
 
 	}
-
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@Override
 	public SiembraLote buscar(Object id) {
 		return dao.buscar(id);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<SiembraLote> listarTodos() {
 		List<SiembraLote> siembras= dao.listarTodos();
 		for (SiembraLote siembraLote : siembras) {
@@ -84,17 +87,23 @@ public class SiembraEJB extends EJBGenerico<SiembraLote> {
 		}
 		return dao.listarTodos();
 	}
-
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<SiembraLote> obtenerSiembraSinCorte(Lote lote) {
 		return siembraDAO.obtenerSiembrasSinCorte(lote);
 	}
-
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public boolean validarFechaActualizacionSiembra(SiembraLote siembraLote) {
 		return siembraDAO.validarFechaActualizacionSiembra(siembraLote);
 	}
-
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public boolean validarFechaCreacionSiembra(SiembraLote siembraLote) {
 		return siembraDAO.validarFechaCreacionSiembra(siembraLote);
 	}
+	
+	public List<SiembraLote> listarSiembraActuales(){
+		return siembraDAO.listarSiembrasActuales();
+	}
+	
+	
 
 }

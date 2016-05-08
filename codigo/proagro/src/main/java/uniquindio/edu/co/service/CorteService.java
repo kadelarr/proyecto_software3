@@ -186,7 +186,7 @@ public class CorteService {
 		} catch (WebApplicationException ce) {
 			// Handle bean validation issues
 			builder.setCode(Response.Status.NOT_FOUND.getStatusCode());
-			builder.setMensaje("No se encontro una siembra con el id: " + id);
+			builder.setMensaje("No se encontro una corte con el id: " + id);
 		} catch (ValidationException e) {
 			// Handle the unique constrain violation
 			builder.setCode(Response.Status.CONFLICT.getStatusCode());

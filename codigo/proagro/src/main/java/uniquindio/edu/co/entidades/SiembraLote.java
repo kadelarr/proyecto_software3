@@ -56,13 +56,13 @@ public class SiembraLote {
 	@JoinColumn(name = "id_lote", nullable = false)
 	private Lote lote;
 
-	@OneToMany(mappedBy = "siembra",   fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "siembra",   fetch=FetchType.LAZY)
 	private List<CorteLote> cortes;
 
-	@OneToMany(mappedBy = "siembra",  fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "siembra",  fetch=FetchType.LAZY)
 	private List<Fertilizacion> fertilizaciones;
 
-	@OneToMany(mappedBy = "siembra", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "siembra", fetch = FetchType.LAZY)
 	private List<ControlQuimico> contro;
 
 	/**
@@ -106,13 +106,13 @@ public class SiembraLote {
 		return lote;
 	}
 
-	public List<Fertilizacion> getFertilizaciones() {
-		return fertilizaciones;
-	}
+//	public List<Fertilizacion> getFertilizaciones() {
+//		return fertilizaciones;
+//	}
 
-	public List<ControlQuimico> getContro() {
-		return contro;
-	}
+//	public List<ControlQuimico> getContro() {
+//		return contro;
+//	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -138,16 +138,16 @@ public class SiembraLote {
 		this.fecha = fecha;
 	}
 
-	/**
-	 * Permite obtener el atributo cortes.
-	 * 
-	 * @author Harold Alexander Jimenez <br/>
-	 *         Email: alexjf197@gmail.com
-	 * @return the cortes
-	 */
-	public List<CorteLote> getCortes() {
-		return cortes;
-	}
+//	/**
+//	 * Permite obtener el atributo cortes.
+//	 * 
+//	 * @author Harold Alexander Jimenez <br/>
+//	 *         Email: alexjf197@gmail.com
+//	 * @return the cortes
+//	 */
+//	public List<CorteLote> getCortes() {
+//		return cortes;
+//	}
 
 	/**
 	 * Método que permite cambiar el valor del atributo cortes por el parámetro

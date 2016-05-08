@@ -125,7 +125,7 @@ public class SiembraService {
 					&& siembraLote.getVariedad() != null) {
 				SiembraLote siembra = siembraEJB.buscar(siembraLote.getId());
 				if (siembra != null) {
-					siembra.setCortes(siembraLote.getCortes());
+//					siembra.setCortes(siembraLote.getCortes());
 					siembra.setFecha(siembraLote.getFecha());
 					siembra.setVariedad(siembraLote.getVariedad());
 					siembra.setLote(siembraLote.getLote());

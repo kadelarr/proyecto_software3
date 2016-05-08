@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,8 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @NamedQuery(name = CorteLote.OBTENER_ULTIMO_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.id= (select MAX(corte.id) FROM CorteLote corte  WHERE corte.siembra.lote=?1)"),
 @NamedQuery(name = CorteLote.LISTADO_DE_CORTES, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 ORDER BY corteLote.fechaInicio DESC"),
-@NamedQuery(name = CorteLote.VALIDAR_CREACION_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND (?2 BETWEEN corteLote.fechaInicio and corteLote.fechaFin OR ?4 between siembra.fecha and corteLote.fechaFin OR corteLote.fechaInicio BETWEEN ?2 AND ?3) ORDER BY corteLote.fechaInicio DESC"),
-@NamedQuery(name = CorteLote.LISTAR_CORTE_SIN_FECHA_FIN, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND corteLote.fechaFin IS NULL")
+@NamedQuery(name = CorteLote.VALIDAR_CREACION_CORTE, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND (?2 BETWEEN corteLote.fechaInicio and corteLote.fechaFin OR ?3 between siembra.fecha and corteLote.fechaFin OR corteLote.fechaInicio BETWEEN ?2 AND ?3) ORDER BY corteLote.fechaInicio DESC"),
+@NamedQuery(name = CorteLote.LISTAR_CORTE_SIN_FECHA_FIN, query = "Select corteLote FROM CorteLote corteLote WHERE corteLote.siembra.lote.numero= ?1 AND corteLote.fechaFin IS NULL"),
+@NamedQuery(name = CorteLote.NUMERO_CORTES_POR_SIEMBRA, query = "Select COUNT(corteLote) FROM CorteLote corteLote WHERE corteLote.siembra.id= ?1"),
+@NamedQuery(name = CorteLote.FECHA_FIN_CORTES_POR_SIEMBRA, query = "Select MAX(corteLote.fechaFin) FROM CorteLote corteLote WHERE corteLote.siembra.id= ?1")
+
+
 
  })
 public class CorteLote {
@@ -32,9 +38,12 @@ public class CorteLote {
 	public static final String OBTENER_ULTIMO_CORTE = "obtenerIdUltimoCorte";
 	public static final String LISTADO_DE_CORTES = "listado_de_cortes";
 	public static final String VALIDAR_CREACION_CORTE = "validar_creacion_corte";
-	public static final String LISTAR_CORTE_SIN_FECHA_FIN ="obtener_corte_sin_fecha_fin";
+	public static final String LISTAR_CORTE_SIN_FECHA_FIN ="obtener_corte_sin_fecha_fin";	
+	public static final String NUMERO_CORTES_POR_SIEMBRA ="numero_cortes_por_siembra";
+	public static final String FECHA_FIN_CORTES_POR_SIEMBRA ="fecha_fin_cortes_por_siembra";
 	@Id
 	@Column(name = "id_corte")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	@NotNull
 	@Column(name = "fecha_inicio")

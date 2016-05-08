@@ -53,8 +53,8 @@ public class CorteLoteEJB extends EJBGenerico<CorteLote> {
 				.isEmpty()) {
 			if (validarCreacionCorte(corte.getSiembra().getLote().getNumero(),
 					corte.getFechaInicio(), corte.getFechaFin())) {
-				SiembraLote siembra = siembraDao.buscar(corte.getSiembra().getId());
-				corte.setSiembra(siembra);
+				calcularAtributosCorteLote(corte);
+				
 				corteDao.crear(corte);
 
 			}else {
@@ -63,6 +63,21 @@ public class CorteLoteEJB extends EJBGenerico<CorteLote> {
 		} else {
 			throw new IllegalStateException("Existen cortes para la siembra seleccionada que aun no se le a asignado fecha fin de corte");
 		}
+	}
+
+	/**
+	 *
+	 *
+	 * @author Harold Alexander Jimenez <br/>
+	 * 		   Email: alexjf197@gmail.com
+	 * @param corte
+	 */
+	private void calcularAtributosCorteLote(CorteLote corte) {
+		Long idSiembra = corte.getSiembra().getId();
+		SiembraLote siembra = siembraDao.buscar(idSiembra);
+		corte.setNumeroCorte(obtenerNumeroCortesPorSiembra(idSiembra)+1);
+		corte.setEdad(getEdadLote(corte));
+		corte.setSiembra(siembra);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -78,5 +93,29 @@ public class CorteLoteEJB extends EJBGenerico<CorteLote> {
 
 		return corteDao.listarCortesSinFechaFin(numero);
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	private Long obtenerNumeroCortesPorSiembra(Long id) {
+
+		return corteDao.numeroCortesPorSiembra(id);
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	private Date obtenerMayorFechaCortesPorSiembra(Long id) {
+
+		return corteDao.MayorFechaCortesPorSiembra(id);
+	}
+	
+	private Long getEdadLote(CorteLote corte){
+		final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día 
+		Date fechaFinal=obtenerMayorFechaCortesPorSiembra(corte.getSiembra().getId());
+		
+		if(fechaFinal!=null){
+			fechaFinal=corte.getSiembra().getFecha();
+		}
+		long diferencia = ( corte.getFechaInicio().getTime() - fechaFinal.getTime() )/MILLSECS_PER_DAY; 
+		return diferencia;
+	}
+
 
 }

@@ -83,14 +83,15 @@ angular.module('Siembra').service('CorteService', function($http) {
 		function($scope, $location, $rootScope, CorteService, MessageService,
 				$routeParams) {
 			$scope.lote="";
+			$scope.titulo;
 			$scope.corte = {
 					id:"",
 					edad:"",
 					fechaInicio:new Date(),
-					fechaFin:new Date(),
-					totalCana:0,
-					totalPanela:0,
-					rendimiento:0,
+					fechaFin:'',
+					totalCana:'',
+					totalPanela:'',
+					rendimiento:'',
 					siembra:{}
 				
 			};
@@ -100,25 +101,23 @@ angular.module('Siembra').service('CorteService', function($http) {
 			$scope.init = function() {
 				$scope.id = $routeParams.id;
 				$scope.editando = false;
+				CorteService.listaSiembrasActuales(function(response) {
+					$scope.siembras = response;
+				}, function() {
+					$scope.desplegarError();
+				});
 				if ($scope.id == "new") {
-					$scope.user = "";
-					CorteService.listaSiembrasActuales(function(response) {
-						$scope.siembras = response;
-					}, function() {
-						$scope.desplegarError();
-					});
+					$scope.titulo="CREAR CORTE";
 
-					CorteService.listarVariedades(function(response) {
-						$scope.variedades = response;
-					}, function() {
-						$scope.desplegarError();
-					});
 				} else {
+					$scope.titulo="EDITAR CORTE";
 					$scope.editando = true;
-					CorteService.obtenerSiembra($scope.id,
+					CorteService.obtenerCorte($scope.id,
 							function(response) {
 								if (response.code == 200) {
-									$scope.siembra = response.object;
+									$scope.corte = response.object;
+									$scope.corte.fechaInicio= new Date(response.object.fechaInicio);
+									$scope.corte.fechaFin= new Date(response.object.fechaFin);
 
 								} else {
 									MessageService
@@ -158,10 +157,12 @@ angular.module('Siembra').service('CorteService', function($http) {
 				}
 			};
 			$scope.crearCorte = function() {
-				CorteService.crearCorte(JSON.stringify($scope.siembra),
+				CorteService.crearCorte(JSON.stringify($scope.corte),
 						function(response) {
 							$scope.validarRespuesta(response);
-							$location.path("/cortes");
+							if(response.code==200){
+								$location.path("/cortes");
+							}
 						}, function() {
 							$scope.desplegarError();
 						});
@@ -173,7 +174,9 @@ angular.module('Siembra').service('CorteService', function($http) {
 						function(response) {
 							$scope.validarRespuesta(response);
 							$scope.user = "";
-							$location.path("/cortes");
+							if(response.code==200){
+								$location.path("/cortes");
+							}
 						}, function() {
 							$scope.desplegarError();
 						});
@@ -201,74 +204,6 @@ angular.module('Siembra').service('CorteService', function($http) {
 			$scope.reset = function() {
 				$location.path("/cortes");
 			};
-			// DATE
-			$scope.today = function() {
-				$scope.corte.fechaInicio = new Date();
-			};
-			$scope.today();
-
-			$scope.clear = function() {
-				$scope.siembra.fechaInicio = null;
-			};
-
-			$scope.dateOptions = {
-				dateDisabled : disabled,
-				formatYear : 'yy',
-				maxDate : new Date(2020, 5, 22),
-				minDate : new Date(),
-				startingDay : 1
-			};
-
-			// Disable weekend selection
-			function disabled(data) {
-				var date = data.date, mode = data.mode;
-				return mode === 'day'
-						&& (date.getDay() === 0 || date.getDay() === 6);
-			}
-
-			$scope.open = function() {
-				$scope.popup1.opened = true;
-			};
-
-			$scope.setDate = function(year, month, day) {
-				$scope.siembra.fechaInicio = new Date(year, month, day);
-			};
-
-			$scope.format = 'yyyy/MM/dd';
-
-			$scope.popup1 = {
-				opened : false
-			};
-
-			var tomorrow = new Date();
-			tomorrow.setDate(tomorrow.getDate() + 1);
-			var afterTomorrow = new Date();
-			afterTomorrow.setDate(tomorrow.getDate() + 1);
-			$scope.events = [ {
-				date : tomorrow,
-				status : 'full'
-			}, {
-				date : afterTomorrow,
-				status : 'partially'
-			} ];
-
-			function getDayClass(data) {
-				var date = data.date, mode = data.mode;
-				if (mode === 'day') {
-					var dayToCheck = new Date(date)
-							.setHours(0, 0, 0, 0);
-
-					for ( var i = 0; i < $scope.events.length; i++) {
-						var currentDay = new Date($scope.events[i].date)
-								.setHours(0, 0, 0, 0);
-
-						if (dayToCheck === currentDay) {
-							return $scope.events[i].status;
-						}
-					}
-				}
-
-				return '';
-			}
+			
 
 		});

@@ -18,7 +18,7 @@
 // Note that this app is a single page app, and each partial is routed to using the URL fragment. For example, to select the 'home' route, the URL is http://localhost:8080/Project/#/home
 angular.module('Usuario', []);
 angular.module('Siembra', []);
-var urlBase = 'http://localhost:8080/proagro/';
+var urlBase = 'http://uckkf894d257.carmenhoyos9.koding.io:8080/proagro/';
 var appModule = angular
 		.module(
 				'Proagro',
